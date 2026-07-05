@@ -1,4 +1,5 @@
 import Combine
+import CoreGraphics
 import Foundation
 
 @MainActor
@@ -10,9 +11,11 @@ final class VisualizerViewModel: ObservableObject {
     let audioSourceManager: AudioSourceManager
 
     private let analyzer = AudioAnalyzer()
+    private let beatDetector = BeatDetector()
     private var displayedBands: [Float] = []
     private var bufferSubscription: AnyCancellable?
     private var lastTickDate: Date?
+    private var lastKnownSize = CGSize(width: 400, height: 300)
 
     init(audioSourceManager: AudioSourceManager) {
         self.audioSourceManager = audioSourceManager
@@ -33,6 +36,11 @@ final class VisualizerViewModel: ObservableObject {
         particleSystem.update(deltaTime: deltaTime)
     }
 
+    func updateCanvasSize(_ size: CGSize) {
+        guard size.width > 0, size.height > 0 else { return }
+        lastKnownSize = size
+    }
+
     private func handle(_ result: AnalysisResult) {
         if displayedBands.count != result.spectrumBands.count {
             displayedBands = result.spectrumBands
@@ -42,8 +50,20 @@ final class VisualizerViewModel: ObservableObject {
             }
         }
 
+        let (isBeat, intensity) = beatDetector.detect(
+            energy: result.overallEnergy,
+            at: ProcessInfo.processInfo.systemUptime
+        )
+
+        if isBeat {
+            let spawnPoint = CGPoint(x: lastKnownSize.width / 2, y: lastKnownSize.height * 0.85)
+            particleSystem.spawnBurst(at: spawnPoint, intensity: intensity)
+        }
+
         var smoothed = result
         smoothed.spectrumBands = displayedBands
+        smoothed.isBeat = isBeat
+        smoothed.beatIntensity = intensity
         smoothedResult = smoothed
     }
 }

@@ -7,6 +7,7 @@ struct VisualizerView: View {
         TimelineView(.animation(minimumInterval: 1.0 / 60.0)) { _ in
             Canvas { context, size in
                 viewModel.tick()
+                viewModel.updateCanvasSize(size)
                 viewModel.activeRenderer.draw(
                     context: &context,
                     size: size,
