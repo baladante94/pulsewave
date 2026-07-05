@@ -134,7 +134,7 @@ final class MenuBarController: NSObject, ObservableObject {
         let bands = viewModel.smoothedResult.spectrumBands
         let barCount = min(size.barCount, bands.count)
         let width = size.statusItemLength
-        let height = statusItem?.button?.bounds.height ?? NSStatusBar.system.thickness
+        let height: CGFloat = 18
         let spacing: CGFloat = size == .wide ? 2 : 1.5
         let barWidth = size == .wide ? max(2, (width - spacing * CGFloat(barCount - 1)) / CGFloat(barCount)) : 2
 
