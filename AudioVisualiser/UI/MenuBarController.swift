@@ -29,6 +29,40 @@ enum MenuBarVisualizerSize: String, CaseIterable, Identifiable, Equatable {
     }
 }
 
+enum MenuBarColorMode: String, CaseIterable, Identifiable, Equatable {
+    case spectrum
+    case mono
+    case neonPink
+    case iceBlue
+
+    var id: String { rawValue }
+
+    var displayName: String {
+        switch self {
+        case .spectrum: return "Spectrum"
+        case .mono: return "Mono"
+        case .neonPink: return "Neon Pink"
+        case .iceBlue: return "Ice Blue"
+        }
+    }
+
+    var isTemplate: Bool { self == .mono }
+
+    func color(forIndex index: Int, count: Int) -> Color {
+        switch self {
+        case .spectrum:
+            let hue = 0.55 + (Double(index) / Double(max(count, 1))) * 0.35
+            return Color(hue: hue, saturation: 0.85, brightness: 1)
+        case .mono:
+            return Color.primary
+        case .neonPink:
+            return Color(red: 1.0, green: 0.2, blue: 0.75)
+        case .iceBlue:
+            return Color(red: 0.35, green: 0.85, blue: 1.0)
+        }
+    }
+}
+
 @MainActor
 final class MenuBarController: NSObject, ObservableObject {
     @Published var isEnabled: Bool {
@@ -42,6 +76,13 @@ final class MenuBarController: NSObject, ObservableObject {
         didSet {
             UserDefaults.standard.set(size.rawValue, forKey: "menuBarVisualizerSize")
             statusItem?.length = size.statusItemLength
+            updateStatusIcon()
+        }
+    }
+
+    @Published var colorMode: MenuBarColorMode {
+        didSet {
+            UserDefaults.standard.set(colorMode.rawValue, forKey: "menuBarVisualizerColorMode")
             updateStatusIcon()
         }
     }
@@ -61,6 +102,8 @@ final class MenuBarController: NSObject, ObservableObject {
         self.isEnabled = (UserDefaults.standard.object(forKey: "menuBarVisualizerEnabled") as? Bool) ?? true
         let storedSize = UserDefaults.standard.string(forKey: "menuBarVisualizerSize")
         self.size = MenuBarVisualizerSize(rawValue: storedSize ?? "") ?? .wide
+        let storedColorMode = UserDefaults.standard.string(forKey: "menuBarVisualizerColorMode")
+        self.colorMode = MenuBarColorMode(rawValue: storedColorMode ?? "") ?? .spectrum
         super.init()
         updateStatusItemVisibility()
     }
@@ -116,10 +159,11 @@ final class MenuBarController: NSObject, ObservableObject {
         let spacing: CGFloat = size == .wide ? 2 : 1.5
         let barWidth = size == .wide ? max(2, (width - spacing * CGFloat(barCount - 1)) / CGFloat(barCount)) : 2
 
+        let colorMode = colorMode
         let content = HStack(alignment: .bottom, spacing: spacing) {
             ForEach(0..<max(barCount, 1), id: \.self) { index in
                 RoundedRectangle(cornerRadius: 0.5)
-                    .fill(Color.primary)
+                    .fill(colorMode.color(forIndex: index, count: barCount))
                     .frame(width: barWidth, height: barCount > 0 ? max(1.5, min(height, CGFloat(bands[index]) * 60)) : 1.5)
             }
         }
@@ -127,7 +171,9 @@ final class MenuBarController: NSObject, ObservableObject {
 
         let renderer = ImageRenderer(content: content)
         renderer.scale = 2
-        return renderer.nsImage ?? NSImage(systemSymbolName: "waveform", accessibilityDescription: nil) ?? NSImage()
+        let image = renderer.nsImage ?? NSImage(systemSymbolName: "waveform", accessibilityDescription: nil) ?? NSImage()
+        image.isTemplate = colorMode.isTemplate
+        return image
     }
 
     @objc private func togglePopover() {

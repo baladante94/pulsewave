@@ -46,6 +46,14 @@ struct ContentView: View {
                     }
                     .pickerStyle(.segmented)
                     .frame(width: 260)
+
+                    Picker("Colors", selection: $menuBarController.colorMode) {
+                        ForEach(MenuBarColorMode.allCases) { mode in
+                            Text(mode.displayName).tag(mode)
+                        }
+                    }
+                    .pickerStyle(.menu)
+                    .frame(width: 180)
                 }
             }
             .padding()
