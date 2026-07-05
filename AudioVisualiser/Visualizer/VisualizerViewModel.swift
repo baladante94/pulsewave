@@ -4,10 +4,7 @@ import Foundation
 
 @MainActor
 final class VisualizerViewModel: ObservableObject {
-    /// Not @Published: this updates ~40x/sec from the audio pipeline, and publishing it would
-    /// invalidate/re-layout the whole view tree (incl. the segmented Pickers) on every frame.
-    /// VisualizerView's Canvas already polls this each tick via its own TimelineView.
-    private(set) var smoothedResult: AnalysisResult = .empty
+    @Published private(set) var smoothedResult: AnalysisResult = .empty
     @Published var activeRenderer: VisualizerRenderer
     @Published var colorTheme: ColorTheme {
         didSet {
