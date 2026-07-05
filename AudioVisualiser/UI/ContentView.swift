@@ -17,6 +17,14 @@ struct ContentView: View {
                 .pickerStyle(.segmented)
                 .frame(width: 260)
 
+                Picker("Style", selection: rendererBinding) {
+                    ForEach(viewModel.availableRenderers, id: \.id) { renderer in
+                        Text(renderer.displayName).tag(renderer.id)
+                    }
+                }
+                .pickerStyle(.segmented)
+                .frame(width: 260)
+
                 if let error = audioSourceManager.lastError {
                     Text(error)
                         .foregroundStyle(.red)
@@ -33,6 +41,13 @@ struct ContentView: View {
             set: { newValue in
                 Task { await audioSourceManager.switchTo(newValue) }
             }
+        )
+    }
+
+    private var rendererBinding: Binding<String> {
+        Binding(
+            get: { viewModel.activeRenderer.id },
+            set: { newValue in viewModel.selectRenderer(id: newValue) }
         )
     }
 }

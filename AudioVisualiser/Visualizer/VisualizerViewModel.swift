@@ -9,6 +9,7 @@ final class VisualizerViewModel: ObservableObject {
 
     let particleSystem = ParticleSystem()
     let audioSourceManager: AudioSourceManager
+    let availableRenderers: [VisualizerRenderer] = [SpectrumBarsRenderer(), RadialPulseRenderer()]
 
     private let analyzer = AudioAnalyzer()
     private let beatDetector = BeatDetector()
@@ -39,6 +40,11 @@ final class VisualizerViewModel: ObservableObject {
     func updateCanvasSize(_ size: CGSize) {
         guard size.width > 0, size.height > 0 else { return }
         lastKnownSize = size
+    }
+
+    func selectRenderer(id: String) {
+        guard let renderer = availableRenderers.first(where: { $0.id == id }) else { return }
+        activeRenderer = renderer
     }
 
     private func handle(_ result: AnalysisResult) {

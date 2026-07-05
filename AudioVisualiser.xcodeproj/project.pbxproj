@@ -19,6 +19,7 @@
 		AC4EE35FFF703726107E5902 /* AudioSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40FBEC3825146E984B668284 /* AudioSource.swift */; };
 		B1A22B09C210E3B404B5539E /* AudioAnalyzer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90B1484B2A4F82A3466757B2 /* AudioAnalyzer.swift */; };
 		C1989C67F4D43855C2610F55 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6FAF872ABA005C5F750E3AA /* ContentView.swift */; };
+		CD0E5DF76F7C43717F465E18 /* RadialPulseRenderer.swift in Sources */ = {isa = PBXBuildFile; fileRef = D94F80C571EB7194B07091DC /* RadialPulseRenderer.swift */; };
 		D9EA8FF546EACEC525848643 /* SpectrumBarsRenderer.swift in Sources */ = {isa = PBXBuildFile; fileRef = F09F9EF492F69C70B2FBDF70 /* SpectrumBarsRenderer.swift */; };
 		DCC1D2B7B1A270C3D66D5F16 /* AudioVisualiserApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99913CEA9E703A36920A86E3 /* AudioVisualiserApp.swift */; };
 		E210F0F140EAF90F4B92E1FE /* AudioSourceManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C703C9BE6C2A035F65011B6 /* AudioSourceManager.swift */; };
@@ -45,6 +46,7 @@
 		CAD3D68B0EF79ACABA81E1B7 /* MenuBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuBarController.swift; sourceTree = "<group>"; };
 		CDF1A511F1076F48BAFEB3AC /* VisualizerRenderer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VisualizerRenderer.swift; sourceTree = "<group>"; };
 		D72D9601CAAEA65650C86F80 /* AudioVisualiser.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = AudioVisualiser.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		D94F80C571EB7194B07091DC /* RadialPulseRenderer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RadialPulseRenderer.swift; sourceTree = "<group>"; };
 		E5C032000BFDA87533B1A968 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		EC843883D43EDE744CC1C39A /* BeatDetector.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BeatDetector.swift; sourceTree = "<group>"; };
 		F09F9EF492F69C70B2FBDF70 /* SpectrumBarsRenderer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpectrumBarsRenderer.swift; sourceTree = "<group>"; };
@@ -110,6 +112,7 @@
 			isa = PBXGroup;
 			children = (
 				64A5F8AE59F267BA86559A0C /* ParticleSystem.swift */,
+				D94F80C571EB7194B07091DC /* RadialPulseRenderer.swift */,
 				F09F9EF492F69C70B2FBDF70 /* SpectrumBarsRenderer.swift */,
 				CDF1A511F1076F48BAFEB3AC /* VisualizerRenderer.swift */,
 				5E93D60CCDABA0AFAC0B15CE /* VisualizerViewModel.swift */,
@@ -214,6 +217,7 @@
 				EDC6709A3A53B327183C69A3 /* MicrophoneSource.swift in Sources */,
 				40BBFD78EA14BA31A09D79DA /* ParticleSystem.swift in Sources */,
 				8B5A329CFB8CFF8C59D1FDDF /* PopoverContentView.swift in Sources */,
+				CD0E5DF76F7C43717F465E18 /* RadialPulseRenderer.swift in Sources */,
 				D9EA8FF546EACEC525848643 /* SpectrumBarsRenderer.swift in Sources */,
 				150FD3EB02E9A682E53CB9CC /* SystemAudioTapSource.swift in Sources */,
 				369648D6084E779B9DF29B45 /* VisualizerRenderer.swift in Sources */,

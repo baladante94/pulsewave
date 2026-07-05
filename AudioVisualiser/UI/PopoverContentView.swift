@@ -18,6 +18,13 @@ struct PopoverContentView: View {
             }
             .pickerStyle(.segmented)
 
+            Picker("Style", selection: rendererBinding) {
+                ForEach(viewModel.availableRenderers, id: \.id) { renderer in
+                    Text(renderer.displayName).tag(renderer.id)
+                }
+            }
+            .pickerStyle(.segmented)
+
             if let error = audioSourceManager.lastError {
                 Text(error)
                     .font(.caption2)
@@ -42,6 +49,13 @@ struct PopoverContentView: View {
             set: { newValue in
                 Task { await audioSourceManager.switchTo(newValue) }
             }
+        )
+    }
+
+    private var rendererBinding: Binding<String> {
+        Binding(
+            get: { viewModel.activeRenderer.id },
+            set: { newValue in viewModel.selectRenderer(id: newValue) }
         )
     }
 }
