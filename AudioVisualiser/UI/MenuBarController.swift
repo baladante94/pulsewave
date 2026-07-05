@@ -161,17 +161,6 @@ final class MenuBarController: NSObject, ObservableObject {
         statusItem?.button?.image = renderStatusIcon()
     }
 
-    /// Linearly interpolates between adjacent bands so we can show more visual bars than we have
-    /// FFT bands (28) -- otherwise a wide strip just stretches 28 bars into fat blocks.
-    private func interpolatedBandValue(_ bands: [Float], at position: Double) -> Float {
-        guard !bands.isEmpty else { return 0 }
-        let clamped = max(0, min(Double(bands.count - 1), position))
-        let lowerIndex = Int(clamped)
-        let upperIndex = min(bands.count - 1, lowerIndex + 1)
-        let fraction = Float(clamped - Double(lowerIndex))
-        return bands[lowerIndex] * (1 - fraction) + bands[upperIndex] * fraction
-    }
-
     /// Auto-gain scoped to the menu bar icon only: tracks a slowly-decaying peak per band and
     /// scales against it. Without this, sustained loud audio (an actual song playing, not just a
     /// quiet test tone) pins every band near its ceiling and all bars sit at max height with no
@@ -195,11 +184,9 @@ final class MenuBarController: NSObject, ObservableObject {
         let bands = normalizedIconBands(viewModel.smoothedResult.spectrumBands)
         let width = size.statusItemLength
         let height: CGFloat = 18
-        let spacing: CGFloat = size == .compact ? 1.5 : 1.5
-        let barWidth: CGFloat = size == .compact ? 2 : 3
-        let barCount = size == .compact
-            ? max(min(size.barCount, bands.count), 1)
-            : max(1, Int(width / (barWidth + spacing)))
+        let spacing: CGFloat = size == .compact ? 1.5 : 2
+        let barCount = size == .compact ? max(min(size.barCount, bands.count), 1) : max(bands.count, 1)
+        let barWidth: CGFloat = size == .compact ? 2 : max(1.5, (width - spacing * CGFloat(barCount - 1)) / CGFloat(barCount))
         let colorMode = colorMode
         let scale: CGFloat = 2
 
@@ -234,13 +221,7 @@ final class MenuBarController: NSObject, ObservableObject {
         cgContext.scaleBy(x: scale, y: scale)
 
         for index in 0..<barCount {
-            let value: CGFloat
-            if size == .compact {
-                value = index < bands.count ? CGFloat(bands[index]) : 0
-            } else {
-                let position = bands.isEmpty ? 0 : Double(index) / Double(max(barCount - 1, 1)) * Double(bands.count - 1)
-                value = CGFloat(interpolatedBandValue(bands, at: position))
-            }
+            let value: CGFloat = index < bands.count ? CGFloat(bands[index]) : 0
             let barHeight = max(1.5, min(height, value * height * 0.92))
             let x = CGFloat(index) * (barWidth + spacing)
             let barRect = CGRect(x: x, y: 0, width: barWidth, height: barHeight)
