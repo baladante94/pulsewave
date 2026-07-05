@@ -4,7 +4,6 @@ import SwiftUI
 enum MenuBarVisualizerSize: String, CaseIterable, Identifiable, Equatable {
     case compact
     case wide
-    case full
 
     var id: String { rawValue }
 
@@ -12,7 +11,6 @@ enum MenuBarVisualizerSize: String, CaseIterable, Identifiable, Equatable {
         switch self {
         case .compact: return "Compact"
         case .wide: return "Wide"
-        case .full: return "Full"
         }
     }
 
@@ -20,48 +18,13 @@ enum MenuBarVisualizerSize: String, CaseIterable, Identifiable, Equatable {
         switch self {
         case .compact: return NSStatusItem.squareLength
         case .wide: return 180
-        case .full: return 600
         }
     }
 
     var barCount: Int {
         switch self {
         case .compact: return 6
-        case .wide, .full: return 28
-        }
-    }
-}
-
-enum MenuBarColorMode: String, CaseIterable, Identifiable, Equatable {
-    case spectrum
-    case mono
-    case neonPink
-    case iceBlue
-
-    var id: String { rawValue }
-
-    var displayName: String {
-        switch self {
-        case .spectrum: return "Spectrum"
-        case .mono: return "Mono"
-        case .neonPink: return "Neon Pink"
-        case .iceBlue: return "Ice Blue"
-        }
-    }
-
-    var isTemplate: Bool { self == .mono }
-
-    func color(forIndex index: Int, count: Int) -> NSColor {
-        switch self {
-        case .spectrum:
-            let hue = 0.55 + (Double(index) / Double(max(count, 1))) * 0.35
-            return NSColor(calibratedHue: hue, saturation: 0.85, brightness: 1, alpha: 1)
-        case .mono:
-            return NSColor.labelColor
-        case .neonPink:
-            return NSColor(calibratedRed: 1.0, green: 0.2, blue: 0.75, alpha: 1)
-        case .iceBlue:
-            return NSColor(calibratedRed: 0.35, green: 0.85, blue: 1.0, alpha: 1)
+        case .wide: return 28
         }
     }
 }
@@ -83,13 +46,6 @@ final class MenuBarController: NSObject, ObservableObject {
         }
     }
 
-    @Published var colorMode: MenuBarColorMode {
-        didSet {
-            UserDefaults.standard.set(colorMode.rawValue, forKey: "menuBarVisualizerColorMode")
-            updateStatusIcon()
-        }
-    }
-
     private let viewModel: VisualizerViewModel
     private let audioSourceManager: AudioSourceManager
     private let onOpenFullScreen: () -> Void
@@ -97,8 +53,6 @@ final class MenuBarController: NSObject, ObservableObject {
     private var statusItem: NSStatusItem?
     private var popover: NSPopover?
     private var iconTimer: Timer?
-    private var globalClickMonitor: Any?
-    private var iconBandCeilings: [Float] = []
 
     init(viewModel: VisualizerViewModel, audioSourceManager: AudioSourceManager, onOpenFullScreen: @escaping () -> Void) {
         self.viewModel = viewModel
@@ -107,8 +61,6 @@ final class MenuBarController: NSObject, ObservableObject {
         self.isEnabled = (UserDefaults.standard.object(forKey: "menuBarVisualizerEnabled") as? Bool) ?? true
         let storedSize = UserDefaults.standard.string(forKey: "menuBarVisualizerSize")
         self.size = MenuBarVisualizerSize(rawValue: storedSize ?? "") ?? .wide
-        let storedColorMode = UserDefaults.standard.string(forKey: "menuBarVisualizerColorMode")
-        self.colorMode = MenuBarColorMode(rawValue: storedColorMode ?? "") ?? .spectrum
         super.init()
         updateStatusItemVisibility()
     }
@@ -140,16 +92,11 @@ final class MenuBarController: NSObject, ObservableObject {
 
     private func startIconTimer() {
         iconTimer?.invalidate()
-        let timer = Timer(timeInterval: 1.0 / 20.0, repeats: true) { [weak self] _ in
+        iconTimer = Timer.scheduledTimer(withTimeInterval: 1.0 / 20.0, repeats: true) { [weak self] _ in
             Task { @MainActor in
                 self?.updateStatusIcon()
             }
         }
-        // Scheduled via RunLoop directly (in .common mode) instead of Timer.scheduledTimer, which
-        // only registers in .default mode -- that pauses while the popover/menu is being tracked,
-        // making the icon appear frozen exactly while someone is looking at the popover.
-        RunLoop.main.add(timer, forMode: .common)
-        iconTimer = timer
     }
 
     private func stopIconTimer() {
@@ -161,80 +108,26 @@ final class MenuBarController: NSObject, ObservableObject {
         statusItem?.button?.image = renderStatusIcon()
     }
 
-    /// Auto-gain scoped to the menu bar icon only: tracks a slowly-decaying peak per band and
-    /// scales against it. Without this, sustained loud audio (an actual song playing, not just a
-    /// quiet test tone) pins every band near its ceiling and all bars sit at max height with no
-    /// visible variation -- looks like one static block instead of a reacting spectrum.
-    private func normalizedIconBands(_ bands: [Float]) -> [Float] {
-        if iconBandCeilings.count != bands.count {
-            iconBandCeilings = bands
-        }
-        var result = [Float](repeating: 0, count: bands.count)
-        for i in 0..<bands.count {
-            let raw = bands[i]
-            iconBandCeilings[i] = max(raw, iconBandCeilings[i] * 0.995)
-            let ceiling = max(iconBandCeilings[i], 0.0005)
-            let ratio = min(1, raw / ceiling)
-            result[i] = pow(ratio, 0.7)
-        }
-        return result
-    }
-
     private func renderStatusIcon() -> NSImage {
-        let bands = normalizedIconBands(viewModel.smoothedResult.spectrumBands)
+        let bands = viewModel.smoothedResult.spectrumBands
+        let barCount = min(size.barCount, bands.count)
         let width = size.statusItemLength
         let height: CGFloat = 18
-        let spacing: CGFloat = size == .compact ? 1.5 : 2
-        let barCount = size == .compact ? max(min(size.barCount, bands.count), 1) : max(bands.count, 1)
-        let barWidth: CGFloat = size == .compact ? 2 : max(1.5, (width - spacing * CGFloat(barCount - 1)) / CGFloat(barCount))
-        let colorMode = colorMode
-        let scale: CGFloat = 2
+        let spacing: CGFloat = size == .wide ? 2 : 1.5
+        let barWidth = size == .wide ? max(2, (width - spacing * CGFloat(barCount - 1)) / CGFloat(barCount)) : 2
 
-        let pixelWidth = max(1, Int(width * scale))
-        let pixelHeight = max(1, Int(height * scale))
-
-        guard let bitmapRep = NSBitmapImageRep(
-            bitmapDataPlanes: nil,
-            pixelsWide: pixelWidth,
-            pixelsHigh: pixelHeight,
-            bitsPerSample: 8,
-            samplesPerPixel: 4,
-            hasAlpha: true,
-            isPlanar: false,
-            colorSpaceName: .deviceRGB,
-            bytesPerRow: 0,
-            bitsPerPixel: 0
-        ) else {
-            return NSImage(systemSymbolName: "waveform", accessibilityDescription: nil) ?? NSImage()
+        let content = HStack(alignment: .bottom, spacing: spacing) {
+            ForEach(0..<max(barCount, 1), id: \.self) { index in
+                RoundedRectangle(cornerRadius: 0.5)
+                    .fill(Color.primary)
+                    .frame(width: barWidth, height: barCount > 0 ? max(1.5, min(height, CGFloat(bands[index]) * 60)) : 1.5)
+            }
         }
-        bitmapRep.size = NSSize(width: width, height: height)
+        .frame(width: width, height: height)
 
-        NSGraphicsContext.saveGraphicsState()
-        defer { NSGraphicsContext.restoreGraphicsState() }
-
-        guard let context = NSGraphicsContext(bitmapImageRep: bitmapRep) else {
-            return NSImage()
-        }
-        NSGraphicsContext.current = context
-        let cgContext = context.cgContext
-        cgContext.clear(CGRect(x: 0, y: 0, width: pixelWidth, height: pixelHeight))
-        cgContext.scaleBy(x: scale, y: scale)
-
-        for index in 0..<barCount {
-            let value: CGFloat = index < bands.count ? CGFloat(bands[index]) : 0
-            let barHeight = max(1.5, min(height, value * height * 0.92))
-            let x = CGFloat(index) * (barWidth + spacing)
-            let barRect = CGRect(x: x, y: 0, width: barWidth, height: barHeight)
-            let path = CGPath(roundedRect: barRect, cornerWidth: barWidth / 3, cornerHeight: barWidth / 3, transform: nil)
-            cgContext.addPath(path)
-            cgContext.setFillColor(colorMode.color(forIndex: index, count: barCount).cgColor)
-            cgContext.fillPath()
-        }
-
-        let image = NSImage(size: NSSize(width: width, height: height))
-        image.addRepresentation(bitmapRep)
-        image.isTemplate = colorMode.isTemplate
-        return image
+        let renderer = ImageRenderer(content: content)
+        renderer.scale = 2
+        return renderer.nsImage ?? NSImage(systemSymbolName: "waveform", accessibilityDescription: nil) ?? NSImage()
     }
 
     @objc private func togglePopover() {
@@ -247,12 +140,11 @@ final class MenuBarController: NSObject, ObservableObject {
         let activePopover = popover ?? {
             let created = NSPopover()
             created.behavior = .transient
-            created.delegate = self
             popover = created
             return created
         }()
 
-        activePopover.contentSize = NSSize(width: 280, height: 320)
+        activePopover.contentSize = NSSize(width: 280, height: 260)
         activePopover.contentViewController = NSHostingController(
             rootView: PopoverContentView(
                 viewModel: viewModel,
@@ -261,18 +153,5 @@ final class MenuBarController: NSObject, ObservableObject {
             )
         )
         activePopover.show(relativeTo: button.bounds, of: button, preferredEdge: .minY)
-
-        globalClickMonitor = NSEvent.addGlobalMonitorForEvents(matching: [.leftMouseDown, .rightMouseDown]) { [weak self] _ in
-            self?.popover?.performClose(nil)
-        }
-    }
-}
-
-extension MenuBarController: NSPopoverDelegate {
-    func popoverDidClose(_ notification: Notification) {
-        if let globalClickMonitor {
-            NSEvent.removeMonitor(globalClickMonitor)
-        }
-        globalClickMonitor = nil
     }
 }

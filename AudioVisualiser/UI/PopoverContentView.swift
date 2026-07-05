@@ -42,14 +42,6 @@ struct PopoverContentView: View {
                     }
                 }
                 .pickerStyle(.segmented)
-
-                Picker("Colors", selection: $menuBarController.colorMode) {
-                    ForEach(MenuBarColorMode.allCases) { mode in
-                        Text(mode.displayName).tag(mode)
-                    }
-                }
-                .pickerStyle(.menu)
-                .frame(maxWidth: .infinity, alignment: .leading)
             }
 
             Button("Open Full Screen") {
