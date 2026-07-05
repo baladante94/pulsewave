@@ -35,6 +35,15 @@ struct PopoverContentView: View {
             Toggle("Show in menu bar", isOn: $menuBarController.isEnabled)
                 .toggleStyle(.switch)
 
+            if menuBarController.isEnabled {
+                Picker("Menu Bar Size", selection: $menuBarController.size) {
+                    ForEach(MenuBarVisualizerSize.allCases) { size in
+                        Text(size.displayName).tag(size)
+                    }
+                }
+                .pickerStyle(.segmented)
+            }
+
             Button("Open Full Screen") {
                 menuBarController.openFullScreenAndClosePopover()
             }
