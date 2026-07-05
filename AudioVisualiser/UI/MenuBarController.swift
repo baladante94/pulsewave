@@ -98,6 +98,7 @@ final class MenuBarController: NSObject, ObservableObject {
     private var popover: NSPopover?
     private var iconTimer: Timer?
     private var globalClickMonitor: Any?
+    private var iconBandCeilings: [Float] = []
 
     init(viewModel: VisualizerViewModel, audioSourceManager: AudioSourceManager, onOpenFullScreen: @escaping () -> Void) {
         self.viewModel = viewModel
@@ -171,8 +172,27 @@ final class MenuBarController: NSObject, ObservableObject {
         return bands[lowerIndex] * (1 - fraction) + bands[upperIndex] * fraction
     }
 
+    /// Auto-gain scoped to the menu bar icon only: tracks a slowly-decaying peak per band and
+    /// scales against it. Without this, sustained loud audio (an actual song playing, not just a
+    /// quiet test tone) pins every band near its ceiling and all bars sit at max height with no
+    /// visible variation -- looks like one static block instead of a reacting spectrum.
+    private func normalizedIconBands(_ bands: [Float]) -> [Float] {
+        if iconBandCeilings.count != bands.count {
+            iconBandCeilings = bands
+        }
+        var result = [Float](repeating: 0, count: bands.count)
+        for i in 0..<bands.count {
+            let raw = bands[i]
+            iconBandCeilings[i] = max(raw, iconBandCeilings[i] * 0.995)
+            let ceiling = max(iconBandCeilings[i], 0.0005)
+            let ratio = min(1, raw / ceiling)
+            result[i] = pow(ratio, 0.7)
+        }
+        return result
+    }
+
     private func renderStatusIcon() -> NSImage {
-        let bands = viewModel.smoothedResult.spectrumBands
+        let bands = normalizedIconBands(viewModel.smoothedResult.spectrumBands)
         let width = size.statusItemLength
         let height: CGFloat = 18
         let spacing: CGFloat = size == .compact ? 1.5 : 1.5
@@ -221,7 +241,7 @@ final class MenuBarController: NSObject, ObservableObject {
                 let position = bands.isEmpty ? 0 : Double(index) / Double(max(barCount - 1, 1)) * Double(bands.count - 1)
                 value = CGFloat(interpolatedBandValue(bands, at: position))
             }
-            let barHeight = max(1.5, min(height, value * 60))
+            let barHeight = max(1.5, min(height, value * height * 0.92))
             let x = CGFloat(index) * (barWidth + spacing)
             let barRect = CGRect(x: x, y: 0, width: barWidth, height: barHeight)
             let path = CGPath(roundedRect: barRect, cornerWidth: barWidth / 3, cornerHeight: barWidth / 3, transform: nil)
