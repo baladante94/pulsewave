@@ -38,6 +38,7 @@ final class AudioSourceManager: ObservableObject {
             lastError = nil
             UserDefaults.standard.set(kind.rawValue, forKey: "lastAudioSourceKind")
         } catch {
+            print("[AudioSourceManager] switchTo(\(kind)) failed: \(error)")
             lastError = error.localizedDescription
             isRunning = false
         }
