@@ -26,6 +26,7 @@
 		EDBFF2AAF643EBC3BBC62E49 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5C032000BFDA87533B1A968 /* AppDelegate.swift */; };
 		EDC6709A3A53B327183C69A3 /* MicrophoneSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD0D142CF653AB797F56F5CE /* MicrophoneSource.swift */; };
 		EED09859F193EFBC59A04EA8 /* AnalysisResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A9CD114E6DB88CFB2840352 /* AnalysisResult.swift */; };
+		FDBC54F0BC57FD439DFB6D63 /* DebugLog.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF64BEE86E16890EFF3FCEAF /* DebugLog.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -41,6 +42,7 @@
 		90B1484B2A4F82A3466757B2 /* AudioAnalyzer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioAnalyzer.swift; sourceTree = "<group>"; };
 		99913CEA9E703A36920A86E3 /* AudioVisualiserApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioVisualiserApp.swift; sourceTree = "<group>"; };
 		A11F7A081F284D757ABFD5E6 /* AudioVisualiser.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = AudioVisualiser.entitlements; sourceTree = "<group>"; };
+		AF64BEE86E16890EFF3FCEAF /* DebugLog.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DebugLog.swift; sourceTree = "<group>"; };
 		BD0D142CF653AB797F56F5CE /* MicrophoneSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MicrophoneSource.swift; sourceTree = "<group>"; };
 		C6FAF872ABA005C5F750E3AA /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		CAD3D68B0EF79ACABA81E1B7 /* MenuBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuBarController.swift; sourceTree = "<group>"; };
@@ -124,6 +126,7 @@
 			isa = PBXGroup;
 			children = (
 				A11F7A081F284D757ABFD5E6 /* AudioVisualiser.entitlements */,
+				AF64BEE86E16890EFF3FCEAF /* DebugLog.swift */,
 				83C1B80C83F65620C1295168 /* Info.plist */,
 			);
 			path = Support;
@@ -212,6 +215,7 @@
 				DCC1D2B7B1A270C3D66D5F16 /* AudioVisualiserApp.swift in Sources */,
 				7B9DFD20C1F1CB5C4EB242F8 /* BeatDetector.swift in Sources */,
 				C1989C67F4D43855C2610F55 /* ContentView.swift in Sources */,
+				FDBC54F0BC57FD439DFB6D63 /* DebugLog.swift in Sources */,
 				8B9A04A7541BD2FC723F1E78 /* FullScreenWindowController.swift in Sources */,
 				7E71CE3CA633A8C1C38F1151 /* MenuBarController.swift in Sources */,
 				EDC6709A3A53B327183C69A3 /* MicrophoneSource.swift in Sources */,
