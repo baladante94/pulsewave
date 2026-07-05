@@ -146,7 +146,7 @@ final class MenuBarController: NSObject, ObservableObject {
                     .frame(width: barWidth, height: barCount > 0 ? max(1.5, min(height, CGFloat(bands[index]) * 60)) : 1.5)
             }
         }
-        .frame(width: width, height: height)
+        .frame(width: width, height: height, alignment: .bottom)
 
         let renderer = ImageRenderer(content: content)
         renderer.scale = 2
