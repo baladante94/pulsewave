@@ -98,7 +98,6 @@ final class MenuBarController: NSObject, ObservableObject {
     private var popover: NSPopover?
     private var iconTimer: Timer?
     private var globalClickMonitor: Any?
-    private var iconBandCeilings: [Float] = []
 
     init(viewModel: VisualizerViewModel, audioSourceManager: AudioSourceManager, onOpenFullScreen: @escaping () -> Void) {
         self.viewModel = viewModel
@@ -156,35 +155,13 @@ final class MenuBarController: NSObject, ObservableObject {
         statusItem?.button?.image = renderStatusIcon()
     }
 
-    /// Local auto-gain for the menu bar icon only: tracks a slowly-decaying peak per band and
-    /// scales against it, so the compact strip shows real variation instead of clipping to
-    /// near-max. Kept separate from AudioAnalyzer so the main window's visualizer (already tuned)
-    /// is unaffected.
-    private func normalizedIconBands(_ bands: [Float]) -> [Float] {
-        if iconBandCeilings.count != bands.count {
-            iconBandCeilings = bands
-        }
-        var result = [Float](repeating: 0, count: bands.count)
-        for i in 0..<bands.count {
-            let raw = bands[i]
-            iconBandCeilings[i] = max(raw, iconBandCeilings[i] * 0.995)
-            let ceiling = max(iconBandCeilings[i], 0.0005)
-            let ratio = min(1, raw / ceiling)
-            result[i] = pow(ratio, 0.7)
-        }
-        return result
-    }
-
     private func renderStatusIcon() -> NSImage {
-        let bands = normalizedIconBands(viewModel.smoothedResult.spectrumBands)
+        let bands = viewModel.smoothedResult.spectrumBands
         let barCount = max(min(size.barCount, bands.count), 1)
         let width = size.statusItemLength
         let height: CGFloat = 18
         let spacing: CGFloat = size == .compact ? 1.5 : 2
-        let maxBarWidth: CGFloat = 6
-        let barWidth = size == .compact ? 2 : min(maxBarWidth, max(1.5, (width - spacing * CGFloat(barCount - 1)) / CGFloat(barCount)))
-        let contentWidth = barWidth * CGFloat(barCount) + spacing * CGFloat(barCount - 1)
-        let startX = size == .compact ? 0 : max(0, (width - contentWidth) / 2)
+        let barWidth = size == .compact ? 2 : max(1.5, (width - spacing * CGFloat(barCount - 1)) / CGFloat(barCount))
         let colorMode = colorMode
         let scale: CGFloat = 2
 
@@ -220,8 +197,8 @@ final class MenuBarController: NSObject, ObservableObject {
 
         for index in 0..<barCount {
             let value = index < bands.count ? CGFloat(bands[index]) : 0
-            let barHeight = max(1.5, min(height, value * height * 0.92))
-            let x = startX + CGFloat(index) * (barWidth + spacing)
+            let barHeight = max(1.5, min(height, value * 60))
+            let x = CGFloat(index) * (barWidth + spacing)
             let barRect = CGRect(x: x, y: 0, width: barWidth, height: barHeight)
             let path = CGPath(roundedRect: barRect, cornerWidth: barWidth / 3, cornerHeight: barWidth / 3, transform: nil)
             cgContext.addPath(path)
