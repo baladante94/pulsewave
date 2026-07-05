@@ -161,7 +161,10 @@ final class MenuBarController: NSObject, ObservableObject {
         let width = size.statusItemLength
         let height: CGFloat = 18
         let spacing: CGFloat = size == .compact ? 1.5 : 2
-        let barWidth = size == .compact ? 2 : max(1.5, (width - spacing * CGFloat(barCount - 1)) / CGFloat(barCount))
+        let maxBarWidth: CGFloat = 6
+        let barWidth = size == .compact ? 2 : min(maxBarWidth, max(1.5, (width - spacing * CGFloat(barCount - 1)) / CGFloat(barCount)))
+        let contentWidth = barWidth * CGFloat(barCount) + spacing * CGFloat(barCount - 1)
+        let startX = size == .compact ? 0 : max(0, (width - contentWidth) / 2)
         let colorMode = colorMode
         let scale: CGFloat = 2
 
@@ -197,8 +200,8 @@ final class MenuBarController: NSObject, ObservableObject {
 
         for index in 0..<barCount {
             let value = index < bands.count ? CGFloat(bands[index]) : 0
-            let barHeight = max(1.5, min(height, value * 60))
-            let x = CGFloat(index) * (barWidth + spacing)
+            let barHeight = max(1.5, min(height, value * height * 0.92))
+            let x = startX + CGFloat(index) * (barWidth + spacing)
             let barRect = CGRect(x: x, y: 0, width: barWidth, height: barHeight)
             let path = CGPath(roundedRect: barRect, cornerWidth: barWidth / 3, cornerHeight: barWidth / 3, transform: nil)
             cgContext.addPath(path)

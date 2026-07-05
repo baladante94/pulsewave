@@ -17,7 +17,7 @@ final class DotGridRenderer: VisualizerRenderer {
 
         for column in 0..<columns {
             let value = CGFloat(bands[column])
-            let litRows = Int(value * CGFloat(rows) * 6)
+            let litRows = Int(value * CGFloat(rows) * 1.1)
             let hue = 0.55 + (Double(column) / Double(columns)) * 0.35
 
             for row in 0..<rows {
