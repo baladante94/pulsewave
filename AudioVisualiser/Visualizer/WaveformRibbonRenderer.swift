@@ -4,9 +4,8 @@ final class WaveformRibbonRenderer: VisualizerRenderer {
     let id = "waveform-ribbon"
     let displayName = "Waveform Ribbon"
 
-    func draw(context: inout GraphicsContext, size: CGSize, state: AnalysisResult, particles: ParticleSystem, theme: ColorTheme) {
+    func draw(context: inout GraphicsContext, size: CGSize, state: AnalysisResult, theme: ColorTheme) {
         drawWaveform(context: &context, size: size, state: state, theme: theme)
-        context.drawParticles(particles)
     }
 
     private func drawWaveform(context: inout GraphicsContext, size: CGSize, state: AnalysisResult, theme: ColorTheme) {

@@ -6,7 +6,7 @@ final class DotGridRenderer: VisualizerRenderer {
 
     private let rows = 12
 
-    func draw(context: inout GraphicsContext, size: CGSize, state: AnalysisResult, particles: ParticleSystem, theme: ColorTheme) {
+    func draw(context: inout GraphicsContext, size: CGSize, state: AnalysisResult, theme: ColorTheme) {
         let bands = state.spectrumBands
         guard !bands.isEmpty else { return }
 
@@ -34,7 +34,5 @@ final class DotGridRenderer: VisualizerRenderer {
                 )
             }
         }
-
-        context.drawParticles(particles)
     }
 }

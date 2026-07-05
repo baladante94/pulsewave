@@ -12,7 +12,6 @@ final class VisualizerViewModel: ObservableObject {
         }
     }
 
-    let particleSystem = ParticleSystem()
     let audioSourceManager: AudioSourceManager
     let availableRenderers: [VisualizerRenderer] = [
         SpectrumBarsRenderer(),
@@ -26,8 +25,6 @@ final class VisualizerViewModel: ObservableObject {
     private let beatDetector = BeatDetector()
     private var displayedBands: [Float] = []
     private var bufferSubscription: AnyCancellable?
-    private var lastTickDate: Date?
-    private var lastKnownSize = CGSize(width: 400, height: 300)
 
     init(audioSourceManager: AudioSourceManager) {
         self.audioSourceManager = audioSourceManager
@@ -41,18 +38,6 @@ final class VisualizerViewModel: ObservableObject {
         bufferSubscription = audioSourceManager.bufferPublisher.sink { [weak self] buffer, time in
             self?.analyzer.process(buffer: buffer, time: time)
         }
-    }
-
-    func tick() {
-        let now = Date()
-        let deltaTime = lastTickDate.map { now.timeIntervalSince($0) } ?? (1.0 / 60.0)
-        lastTickDate = now
-        particleSystem.update(deltaTime: deltaTime)
-    }
-
-    func updateCanvasSize(_ size: CGSize) {
-        guard size.width > 0, size.height > 0 else { return }
-        lastKnownSize = size
     }
 
     func selectRenderer(id: String) {
@@ -73,11 +58,6 @@ final class VisualizerViewModel: ObservableObject {
             energy: result.overallEnergy,
             at: ProcessInfo.processInfo.systemUptime
         )
-
-        if isBeat {
-            let spawnPoint = CGPoint(x: lastKnownSize.width / 2, y: lastKnownSize.height * 0.85)
-            particleSystem.spawnBurst(at: spawnPoint, intensity: intensity)
-        }
 
         var smoothed = result
         smoothed.spectrumBands = displayedBands

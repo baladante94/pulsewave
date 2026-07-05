@@ -1,3 +1,4 @@
+import AppKit
 import SwiftUI
 
 struct PopoverContentView: View {
@@ -69,6 +70,11 @@ struct PopoverContentView: View {
                 }
             }
             .frame(maxWidth: .infinity)
+
+            Button("Quit AudioVisualiser") {
+                NSApp.terminate(nil)
+            }
+            .foregroundStyle(.red)
         }
         .padding(12)
         .frame(width: 280)

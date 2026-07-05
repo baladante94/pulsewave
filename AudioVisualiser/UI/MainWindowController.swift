@@ -3,11 +3,15 @@ import SwiftUI
 
 @MainActor
 final class MainWindowController: NSWindowController, NSWindowDelegate {
+    private let onVisibilityChange: (Bool) -> Void
+
     init(
         viewModel: VisualizerViewModel,
         audioSourceManager: AudioSourceManager,
-        menuBarController: MenuBarController
+        menuBarController: MenuBarController,
+        onVisibilityChange: @escaping (Bool) -> Void
     ) {
+        self.onVisibilityChange = onVisibilityChange
         let window = NSWindow(
             contentRect: NSRect(x: 0, y: 0, width: 720, height: 520),
             styleMask: [.titled, .closable, .miniaturizable, .resizable],
@@ -35,6 +39,7 @@ final class MainWindowController: NSWindowController, NSWindowDelegate {
     }
 
     func show() {
+        onVisibilityChange(true)
         NSApp.activate(ignoringOtherApps: true)
         window?.makeKeyAndOrderFront(nil)
     }
@@ -43,6 +48,7 @@ final class MainWindowController: NSWindowController, NSWindowDelegate {
     /// instead of destroying it, so it can be reopened instantly from the menu bar.
     func windowShouldClose(_ sender: NSWindow) -> Bool {
         sender.orderOut(nil)
+        onVisibilityChange(false)
         return false
     }
 }

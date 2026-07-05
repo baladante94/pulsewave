@@ -15,7 +15,10 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
     private lazy var mainWindowController = MainWindowController(
         viewModel: viewModel,
         audioSourceManager: audioSourceManager,
-        menuBarController: menuBarController
+        menuBarController: menuBarController,
+        onVisibilityChange: { [weak self] visible in
+            NSApp.setActivationPolicy(visible ? .regular : .accessory)
+        }
     )
 
     func applicationDidFinishLaunching(_ notification: Notification) {

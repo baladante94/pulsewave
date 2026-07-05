@@ -10,7 +10,6 @@
 		150FD3EB02E9A682E53CB9CC /* SystemAudioTapSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7CB7B9AD92ED6F719DB3B73 /* SystemAudioTapSource.swift */; };
 		2F8B7CA637BE7E307CA3BDDA /* VisualizerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 880903052C5A7E5CB3FD5A03 /* VisualizerView.swift */; };
 		369648D6084E779B9DF29B45 /* VisualizerRenderer.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDF1A511F1076F48BAFEB3AC /* VisualizerRenderer.swift */; };
-		40BBFD78EA14BA31A09D79DA /* ParticleSystem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 64A5F8AE59F267BA86559A0C /* ParticleSystem.swift */; };
 		6FBE819899ED9FB8AE89D60E /* MirrorBarsRenderer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37D53521564A96D968412D5B /* MirrorBarsRenderer.swift */; };
 		70197902407676BC706D17B3 /* MainWindowController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 869AFA11213A7F07425E3873 /* MainWindowController.swift */; };
 		7B9DFD20C1F1CB5C4EB242F8 /* BeatDetector.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC843883D43EDE744CC1C39A /* BeatDetector.swift */; };
@@ -43,7 +42,6 @@
 		49CA4CC27A0609528554FC01 /* PopoverContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PopoverContentView.swift; sourceTree = "<group>"; };
 		4A9CD114E6DB88CFB2840352 /* AnalysisResult.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnalysisResult.swift; sourceTree = "<group>"; };
 		5E93D60CCDABA0AFAC0B15CE /* VisualizerViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VisualizerViewModel.swift; sourceTree = "<group>"; };
-		64A5F8AE59F267BA86559A0C /* ParticleSystem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ParticleSystem.swift; sourceTree = "<group>"; };
 		796F7EF400EFDA09B4FBB183 /* WaveformRibbonRenderer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WaveformRibbonRenderer.swift; sourceTree = "<group>"; };
 		83C1B80C83F65620C1295168 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		869AFA11213A7F07425E3873 /* MainWindowController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainWindowController.swift; sourceTree = "<group>"; };
@@ -127,7 +125,6 @@
 				1D93104628104BEB86F376C8 /* ColorTheme.swift */,
 				32B7F6D949A3EF953CD81115 /* DotGridRenderer.swift */,
 				37D53521564A96D968412D5B /* MirrorBarsRenderer.swift */,
-				64A5F8AE59F267BA86559A0C /* ParticleSystem.swift */,
 				D94F80C571EB7194B07091DC /* RadialPulseRenderer.swift */,
 				F09F9EF492F69C70B2FBDF70 /* SpectrumBarsRenderer.swift */,
 				CDF1A511F1076F48BAFEB3AC /* VisualizerRenderer.swift */,
@@ -238,7 +235,6 @@
 				7E71CE3CA633A8C1C38F1151 /* MenuBarController.swift in Sources */,
 				EDC6709A3A53B327183C69A3 /* MicrophoneSource.swift in Sources */,
 				6FBE819899ED9FB8AE89D60E /* MirrorBarsRenderer.swift in Sources */,
-				40BBFD78EA14BA31A09D79DA /* ParticleSystem.swift in Sources */,
 				8B5A329CFB8CFF8C59D1FDDF /* PopoverContentView.swift in Sources */,
 				CD0E5DF76F7C43717F465E18 /* RadialPulseRenderer.swift in Sources */,
 				D9EA8FF546EACEC525848643 /* SpectrumBarsRenderer.swift in Sources */,

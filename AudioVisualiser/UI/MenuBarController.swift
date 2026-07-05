@@ -98,7 +98,8 @@ final class MenuBarController: NSObject, ObservableObject {
             item.button?.image = NSImage(systemSymbolName: "waveform", accessibilityDescription: "AudioVisualiser")
             item.button?.imagePosition = .imageOnly
             item.button?.target = self
-            item.button?.action = #selector(togglePopover)
+            item.button?.action = #selector(statusItemClicked)
+            item.button?.sendAction(on: [.leftMouseUp, .rightMouseUp])
             statusItem = item
             startIconTimer()
         } else {
@@ -154,7 +155,29 @@ final class MenuBarController: NSObject, ObservableObject {
         return image
     }
 
-    @objc private func togglePopover() {
+    @objc private func statusItemClicked() {
+        if NSApp.currentEvent?.type == .rightMouseUp {
+            showContextMenu()
+        } else {
+            togglePopover()
+        }
+    }
+
+    private func showContextMenu() {
+        guard let button = statusItem?.button else { return }
+        let menu = NSMenu()
+        menu.addItem(withTitle: "Quit AudioVisualiser", action: #selector(quit), keyEquivalent: "q")
+            .target = self
+        statusItem?.menu = menu
+        button.performClick(nil)
+        statusItem?.menu = nil
+    }
+
+    @objc private func quit() {
+        NSApp.terminate(nil)
+    }
+
+    private func togglePopover() {
         guard let button = statusItem?.button else { return }
         if let popover, popover.isShown {
             popover.performClose(nil)

@@ -4,7 +4,7 @@ final class RadialPulseRenderer: VisualizerRenderer {
     let id = "radial-pulse"
     let displayName = "Radial Pulse"
 
-    func draw(context: inout GraphicsContext, size: CGSize, state: AnalysisResult, particles: ParticleSystem, theme: ColorTheme) {
+    func draw(context: inout GraphicsContext, size: CGSize, state: AnalysisResult, theme: ColorTheme) {
         let center = CGPoint(x: size.width / 2, y: size.height / 2)
         let maxRadius = min(size.width, size.height) / 2 - 10
         let baseRadius = maxRadius * 0.35

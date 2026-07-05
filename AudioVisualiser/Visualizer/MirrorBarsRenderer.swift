@@ -7,9 +7,8 @@ final class MirrorBarsRenderer: VisualizerRenderer {
     private let barSpacing: CGFloat = 4
     private let heightScale: CGFloat = 4
 
-    func draw(context: inout GraphicsContext, size: CGSize, state: AnalysisResult, particles: ParticleSystem, theme: ColorTheme) {
+    func draw(context: inout GraphicsContext, size: CGSize, state: AnalysisResult, theme: ColorTheme) {
         drawBars(context: &context, size: size, bands: state.spectrumBands, theme: theme)
-        context.drawParticles(particles)
     }
 
     private func drawBars(context: inout GraphicsContext, size: CGSize, bands: [Float], theme: ColorTheme) {
