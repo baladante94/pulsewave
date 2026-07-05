@@ -11,7 +11,6 @@ final class AudioAnalyzer {
     private var ringBuffer: [Float] = []
     private var sampleRate: Double = 44100
     private var bandRanges: [(Int, Int)] = []
-    private var bandCeilings: [Float] = []
 
     private let queue = DispatchQueue(label: "audio.analysis", qos: .userInteractive)
 
@@ -108,31 +107,12 @@ final class AudioAnalyzer {
         let overallEnergy = normalized.reduce(0, +) / Float(max(1, normalized.count))
 
         return AnalysisResult(
-            spectrumBands: normalizeForDisplay(bands),
+            spectrumBands: bands,
             timeDomainSamples: samples,
             overallEnergy: overallEnergy,
             isBeat: false,
             beatIntensity: 0
         )
-    }
-
-    /// Auto-gain: tracks a slowly-decaying peak per band and scales against it, so bars use the
-    /// full visual range regardless of whether the source is quiet (mic) or loud (system audio),
-    /// instead of clipping to near-max with a fixed multiplier.
-    private func normalizeForDisplay(_ bands: [Float]) -> [Float] {
-        if bandCeilings.count != bands.count {
-            bandCeilings = bands
-        }
-
-        var displayBands = [Float](repeating: 0, count: bands.count)
-        for i in 0..<bands.count {
-            let raw = bands[i]
-            bandCeilings[i] = max(raw, bandCeilings[i] * 0.995)
-            let ceiling = max(bandCeilings[i], 0.0005)
-            let ratio = min(1, raw / ceiling)
-            displayBands[i] = pow(ratio, 0.7)
-        }
-        return displayBands
     }
 
     private func computeBandRanges(binCount: Int) {
