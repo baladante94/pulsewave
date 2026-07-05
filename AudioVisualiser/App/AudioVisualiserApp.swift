@@ -5,13 +5,8 @@ struct AudioVisualiserApp: App {
     @NSApplicationDelegateAdaptor(AppDelegate.self) private var appDelegate
 
     var body: some Scene {
-        WindowGroup {
-            ContentView(
-                viewModel: appDelegate.viewModel,
-                audioSourceManager: appDelegate.audioSourceManager,
-                menuBarController: appDelegate.menuBarController
-            )
-            .frame(minWidth: 480, minHeight: 360)
+        Settings {
+            EmptyView()
         }
         .commands {
             CommandGroup(after: .windowArrangement) {
@@ -19,6 +14,11 @@ struct AudioVisualiserApp: App {
                     appDelegate.showFullScreen()
                 }
                 .keyboardShortcut("f", modifiers: [.command])
+
+                Button("Show Main Window") {
+                    appDelegate.showMainWindow()
+                }
+                .keyboardShortcut("m", modifiers: [.command])
             }
         }
     }

@@ -4,7 +4,7 @@ final class RadialPulseRenderer: VisualizerRenderer {
     let id = "radial-pulse"
     let displayName = "Radial Pulse"
 
-    func draw(context: inout GraphicsContext, size: CGSize, state: AnalysisResult, particles: ParticleSystem) {
+    func draw(context: inout GraphicsContext, size: CGSize, state: AnalysisResult, particles: ParticleSystem, theme: ColorTheme) {
         let center = CGPoint(x: size.width / 2, y: size.height / 2)
         let maxRadius = min(size.width, size.height) / 2 - 10
         let baseRadius = maxRadius * 0.35
@@ -12,7 +12,7 @@ final class RadialPulseRenderer: VisualizerRenderer {
         let beatBoost = state.isBeat ? CGFloat(state.beatIntensity) * maxRadius * 0.25 : 0
         let radius = baseRadius + energyBoost + beatBoost
 
-        let ringColor = Color(hue: 0.7, saturation: 0.7, brightness: 0.95)
+        let ringColor = theme.color(forIndex: 0, count: 2)
         context.stroke(
             Path(ellipseIn: CGRect(x: center.x - radius, y: center.y - radius, width: radius * 2, height: radius * 2)),
             with: .color(ringColor),
@@ -29,13 +29,10 @@ final class RadialPulseRenderer: VisualizerRenderer {
                 y: center.y + sin(angle) * dotRadius
             )
             let dotSize: CGFloat = 4
-            let hue = 0.55 + (Double(index) / Double(bandCount)) * 0.3
             context.fill(
                 Path(ellipseIn: CGRect(x: point.x - dotSize / 2, y: point.y - dotSize / 2, width: dotSize, height: dotSize)),
-                with: .color(Color(hue: hue, saturation: 0.8, brightness: 1))
+                with: .color(theme.color(forIndex: index, count: bandCount))
             )
         }
-
-        context.drawParticles(particles)
     }
 }

@@ -12,7 +12,8 @@ struct VisualizerView: View {
                     context: &context,
                     size: size,
                     state: viewModel.smoothedResult,
-                    particles: viewModel.particleSystem
+                    particles: viewModel.particleSystem,
+                    theme: viewModel.colorTheme
                 )
             }
             .background(Color.black)

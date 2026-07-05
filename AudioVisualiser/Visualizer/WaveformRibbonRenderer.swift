@@ -4,12 +4,12 @@ final class WaveformRibbonRenderer: VisualizerRenderer {
     let id = "waveform-ribbon"
     let displayName = "Waveform Ribbon"
 
-    func draw(context: inout GraphicsContext, size: CGSize, state: AnalysisResult, particles: ParticleSystem) {
-        drawWaveform(context: &context, size: size, state: state)
+    func draw(context: inout GraphicsContext, size: CGSize, state: AnalysisResult, particles: ParticleSystem, theme: ColorTheme) {
+        drawWaveform(context: &context, size: size, state: state, theme: theme)
         context.drawParticles(particles)
     }
 
-    private func drawWaveform(context: inout GraphicsContext, size: CGSize, state: AnalysisResult) {
+    private func drawWaveform(context: inout GraphicsContext, size: CGSize, state: AnalysisResult, theme: ColorTheme) {
         let samples = state.timeDomainSamples
         guard samples.count > 1 else { return }
 
@@ -27,7 +27,7 @@ final class WaveformRibbonRenderer: VisualizerRenderer {
         }
 
         let beatGlow = state.isBeat ? CGFloat(state.beatIntensity) : 0
-        let color = Color(hue: 0.52, saturation: 0.75, brightness: 1)
+        let color = theme.color(forIndex: 0, count: 2)
         context.stroke(path, with: .color(color.opacity(0.9)), lineWidth: 2 + beatGlow * 4)
         context.stroke(path, with: .color(color.opacity(0.35)), lineWidth: 6 + beatGlow * 10)
     }

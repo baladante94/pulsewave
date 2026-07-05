@@ -26,6 +26,14 @@ struct ContentView: View {
                 .pickerStyle(.menu)
                 .frame(width: 180)
 
+                Picker("Colors", selection: $viewModel.colorTheme) {
+                    ForEach(ColorTheme.allCases) { theme in
+                        Text(theme.displayName).tag(theme)
+                    }
+                }
+                .pickerStyle(.menu)
+                .frame(width: 180)
+
                 if let error = audioSourceManager.lastError {
                     Text(error)
                         .foregroundStyle(.red)
@@ -47,9 +55,9 @@ struct ContentView: View {
                     .pickerStyle(.segmented)
                     .frame(width: 260)
 
-                    Picker("Colors", selection: $menuBarController.colorMode) {
-                        ForEach(MenuBarColorMode.allCases) { mode in
-                            Text(mode.displayName).tag(mode)
+                    Picker("Menu Bar Colors", selection: $menuBarController.colorTheme) {
+                        ForEach(ColorTheme.allCases) { theme in
+                            Text(theme.displayName).tag(theme)
                         }
                     }
                     .pickerStyle(.menu)

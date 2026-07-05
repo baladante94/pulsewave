@@ -26,6 +26,14 @@ struct PopoverContentView: View {
             .pickerStyle(.menu)
             .frame(maxWidth: .infinity, alignment: .leading)
 
+            Picker("Colors", selection: $viewModel.colorTheme) {
+                ForEach(ColorTheme.allCases) { theme in
+                    Text(theme.displayName).tag(theme)
+                }
+            }
+            .pickerStyle(.menu)
+            .frame(maxWidth: .infinity, alignment: .leading)
+
             if let error = audioSourceManager.lastError {
                 Text(error)
                     .font(.caption2)
@@ -43,17 +51,22 @@ struct PopoverContentView: View {
                 }
                 .pickerStyle(.segmented)
 
-                Picker("Colors", selection: $menuBarController.colorMode) {
-                    ForEach(MenuBarColorMode.allCases) { mode in
-                        Text(mode.displayName).tag(mode)
+                Picker("Menu Bar Colors", selection: $menuBarController.colorTheme) {
+                    ForEach(ColorTheme.allCases) { theme in
+                        Text(theme.displayName).tag(theme)
                     }
                 }
                 .pickerStyle(.menu)
                 .frame(maxWidth: .infinity, alignment: .leading)
             }
 
-            Button("Open Full Screen") {
-                menuBarController.openFullScreenAndClosePopover()
+            HStack {
+                Button("Open Main Window") {
+                    menuBarController.showMainWindow()
+                }
+                Button("Open Full Screen") {
+                    menuBarController.openFullScreenAndClosePopover()
+                }
             }
             .frame(maxWidth: .infinity)
         }

@@ -6,6 +6,11 @@ import Foundation
 final class VisualizerViewModel: ObservableObject {
     @Published private(set) var smoothedResult: AnalysisResult = .empty
     @Published var activeRenderer: VisualizerRenderer
+    @Published var colorTheme: ColorTheme {
+        didSet {
+            UserDefaults.standard.set(colorTheme.rawValue, forKey: "appColorTheme")
+        }
+    }
 
     let particleSystem = ParticleSystem()
     let audioSourceManager: AudioSourceManager
@@ -27,6 +32,8 @@ final class VisualizerViewModel: ObservableObject {
     init(audioSourceManager: AudioSourceManager) {
         self.audioSourceManager = audioSourceManager
         self.activeRenderer = SpectrumBarsRenderer()
+        let storedTheme = UserDefaults.standard.string(forKey: "appColorTheme")
+        self.colorTheme = ColorTheme(rawValue: storedTheme ?? "") ?? .spectrum
 
         analyzer.onResult = { [weak self] result in
             self?.handle(result)

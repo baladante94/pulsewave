@@ -7,16 +7,27 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
     lazy var menuBarController = MenuBarController(
         viewModel: viewModel,
         audioSourceManager: audioSourceManager,
-        onOpenFullScreen: { [weak self] in self?.showFullScreen() }
+        onOpenFullScreen: { [weak self] in self?.showFullScreen() },
+        onOpenMainWindow: { [weak self] in self?.showMainWindow() }
     )
 
     private var fullScreenController: FullScreenWindowController?
+    private lazy var mainWindowController = MainWindowController(
+        viewModel: viewModel,
+        audioSourceManager: audioSourceManager,
+        menuBarController: menuBarController
+    )
 
     func applicationDidFinishLaunching(_ notification: Notification) {
-        NSApp.setActivationPolicy(.regular)
+        NSApp.setActivationPolicy(.accessory)
         _ = menuBarController
+        mainWindowController.show()
 
         Task { await audioSourceManager.start() }
+    }
+
+    func applicationShouldTerminateAfterLastWindowClosed(_ sender: NSApplication) -> Bool {
+        false
     }
 
     func showFullScreen() {
@@ -24,5 +35,9 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
             fullScreenController = FullScreenWindowController(viewModel: viewModel)
         }
         fullScreenController?.show()
+    }
+
+    func showMainWindow() {
+        mainWindowController.show()
     }
 }
