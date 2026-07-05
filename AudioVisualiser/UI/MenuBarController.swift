@@ -139,11 +139,16 @@ final class MenuBarController: NSObject, ObservableObject {
 
     private func startIconTimer() {
         iconTimer?.invalidate()
-        iconTimer = Timer.scheduledTimer(withTimeInterval: 1.0 / 20.0, repeats: true) { [weak self] _ in
+        let timer = Timer(timeInterval: 1.0 / 20.0, repeats: true) { [weak self] _ in
             Task { @MainActor in
                 self?.updateStatusIcon()
             }
         }
+        // Scheduled via RunLoop directly (in .common mode) instead of Timer.scheduledTimer, which
+        // only registers in .default mode -- that pauses while the popover/menu is being tracked,
+        // making the icon appear frozen exactly while someone is looking at the popover.
+        RunLoop.main.add(timer, forMode: .common)
+        iconTimer = timer
     }
 
     private func stopIconTimer() {
