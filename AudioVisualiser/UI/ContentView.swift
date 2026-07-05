@@ -3,6 +3,7 @@ import SwiftUI
 struct ContentView: View {
     @ObservedObject var viewModel: VisualizerViewModel
     @ObservedObject var audioSourceManager: AudioSourceManager
+    @ObservedObject var menuBarController: MenuBarController
 
     var body: some View {
         ZStack(alignment: .topLeading) {
@@ -29,6 +30,30 @@ struct ContentView: View {
                     Text(error)
                         .foregroundStyle(.red)
                         .font(.caption)
+                }
+
+                Divider()
+                    .frame(width: 260)
+
+                Toggle("Show in menu bar", isOn: $menuBarController.isEnabled)
+                    .toggleStyle(.switch)
+
+                if menuBarController.isEnabled {
+                    Picker("Menu Bar Size", selection: $menuBarController.size) {
+                        ForEach(MenuBarVisualizerSize.allCases) { size in
+                            Text(size.displayName).tag(size)
+                        }
+                    }
+                    .pickerStyle(.segmented)
+                    .frame(width: 260)
+
+                    Picker("Colors", selection: $menuBarController.colorMode) {
+                        ForEach(MenuBarColorMode.allCases) { mode in
+                            Text(mode.displayName).tag(mode)
+                        }
+                    }
+                    .pickerStyle(.menu)
+                    .frame(width: 180)
                 }
             }
             .padding()

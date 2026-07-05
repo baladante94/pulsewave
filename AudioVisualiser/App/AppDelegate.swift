@@ -4,18 +4,17 @@ import AppKit
 final class AppDelegate: NSObject, NSApplicationDelegate {
     let audioSourceManager = AudioSourceManager()
     lazy var viewModel = VisualizerViewModel(audioSourceManager: audioSourceManager)
+    lazy var menuBarController = MenuBarController(
+        viewModel: viewModel,
+        audioSourceManager: audioSourceManager,
+        onOpenFullScreen: { [weak self] in self?.showFullScreen() }
+    )
 
-    private var menuBarController: MenuBarController?
     private var fullScreenController: FullScreenWindowController?
 
     func applicationDidFinishLaunching(_ notification: Notification) {
         NSApp.setActivationPolicy(.regular)
-
-        menuBarController = MenuBarController(
-            viewModel: viewModel,
-            audioSourceManager: audioSourceManager,
-            onOpenFullScreen: { [weak self] in self?.showFullScreen() }
-        )
+        _ = menuBarController
 
         Task { await audioSourceManager.start() }
     }

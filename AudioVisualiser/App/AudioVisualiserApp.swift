@@ -6,8 +6,12 @@ struct AudioVisualiserApp: App {
 
     var body: some Scene {
         WindowGroup {
-            ContentView(viewModel: appDelegate.viewModel, audioSourceManager: appDelegate.audioSourceManager)
-                .frame(minWidth: 480, minHeight: 320)
+            ContentView(
+                viewModel: appDelegate.viewModel,
+                audioSourceManager: appDelegate.audioSourceManager,
+                menuBarController: appDelegate.menuBarController
+            )
+            .frame(minWidth: 480, minHeight: 360)
         }
         .commands {
             CommandGroup(after: .windowArrangement) {
