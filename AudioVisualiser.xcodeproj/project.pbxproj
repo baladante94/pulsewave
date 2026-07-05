@@ -12,6 +12,9 @@
 		369648D6084E779B9DF29B45 /* VisualizerRenderer.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDF1A511F1076F48BAFEB3AC /* VisualizerRenderer.swift */; };
 		40BBFD78EA14BA31A09D79DA /* ParticleSystem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 64A5F8AE59F267BA86559A0C /* ParticleSystem.swift */; };
 		7B9DFD20C1F1CB5C4EB242F8 /* BeatDetector.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC843883D43EDE744CC1C39A /* BeatDetector.swift */; };
+		7E71CE3CA633A8C1C38F1151 /* MenuBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAD3D68B0EF79ACABA81E1B7 /* MenuBarController.swift */; };
+		8B5A329CFB8CFF8C59D1FDDF /* PopoverContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49CA4CC27A0609528554FC01 /* PopoverContentView.swift */; };
+		8B9A04A7541BD2FC723F1E78 /* FullScreenWindowController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C816D8D8588504B8A674622 /* FullScreenWindowController.swift */; };
 		947E426D602DD421EC57FA18 /* VisualizerViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E93D60CCDABA0AFAC0B15CE /* VisualizerViewModel.swift */; };
 		AC4EE35FFF703726107E5902 /* AudioSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40FBEC3825146E984B668284 /* AudioSource.swift */; };
 		B1A22B09C210E3B404B5539E /* AudioAnalyzer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90B1484B2A4F82A3466757B2 /* AudioAnalyzer.swift */; };
@@ -25,7 +28,9 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		1C816D8D8588504B8A674622 /* FullScreenWindowController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FullScreenWindowController.swift; sourceTree = "<group>"; };
 		40FBEC3825146E984B668284 /* AudioSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioSource.swift; sourceTree = "<group>"; };
+		49CA4CC27A0609528554FC01 /* PopoverContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PopoverContentView.swift; sourceTree = "<group>"; };
 		4A9CD114E6DB88CFB2840352 /* AnalysisResult.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnalysisResult.swift; sourceTree = "<group>"; };
 		5E93D60CCDABA0AFAC0B15CE /* VisualizerViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VisualizerViewModel.swift; sourceTree = "<group>"; };
 		64A5F8AE59F267BA86559A0C /* ParticleSystem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ParticleSystem.swift; sourceTree = "<group>"; };
@@ -37,6 +42,7 @@
 		A11F7A081F284D757ABFD5E6 /* AudioVisualiser.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = AudioVisualiser.entitlements; sourceTree = "<group>"; };
 		BD0D142CF653AB797F56F5CE /* MicrophoneSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MicrophoneSource.swift; sourceTree = "<group>"; };
 		C6FAF872ABA005C5F750E3AA /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+		CAD3D68B0EF79ACABA81E1B7 /* MenuBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuBarController.swift; sourceTree = "<group>"; };
 		CDF1A511F1076F48BAFEB3AC /* VisualizerRenderer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VisualizerRenderer.swift; sourceTree = "<group>"; };
 		D72D9601CAAEA65650C86F80 /* AudioVisualiser.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = AudioVisualiser.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		E5C032000BFDA87533B1A968 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -84,6 +90,9 @@
 			isa = PBXGroup;
 			children = (
 				C6FAF872ABA005C5F750E3AA /* ContentView.swift */,
+				1C816D8D8588504B8A674622 /* FullScreenWindowController.swift */,
+				CAD3D68B0EF79ACABA81E1B7 /* MenuBarController.swift */,
+				49CA4CC27A0609528554FC01 /* PopoverContentView.swift */,
 				880903052C5A7E5CB3FD5A03 /* VisualizerView.swift */,
 			);
 			path = UI;
@@ -200,8 +209,11 @@
 				DCC1D2B7B1A270C3D66D5F16 /* AudioVisualiserApp.swift in Sources */,
 				7B9DFD20C1F1CB5C4EB242F8 /* BeatDetector.swift in Sources */,
 				C1989C67F4D43855C2610F55 /* ContentView.swift in Sources */,
+				8B9A04A7541BD2FC723F1E78 /* FullScreenWindowController.swift in Sources */,
+				7E71CE3CA633A8C1C38F1151 /* MenuBarController.swift in Sources */,
 				EDC6709A3A53B327183C69A3 /* MicrophoneSource.swift in Sources */,
 				40BBFD78EA14BA31A09D79DA /* ParticleSystem.swift in Sources */,
+				8B5A329CFB8CFF8C59D1FDDF /* PopoverContentView.swift in Sources */,
 				D9EA8FF546EACEC525848643 /* SpectrumBarsRenderer.swift in Sources */,
 				150FD3EB02E9A682E53CB9CC /* SystemAudioTapSource.swift in Sources */,
 				369648D6084E779B9DF29B45 /* VisualizerRenderer.swift in Sources */,

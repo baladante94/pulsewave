@@ -25,9 +25,6 @@ struct ContentView: View {
             }
             .padding()
         }
-        .task {
-            await audioSourceManager.start()
-        }
     }
 
     private var sourceBinding: Binding<AudioSourceKind> {
