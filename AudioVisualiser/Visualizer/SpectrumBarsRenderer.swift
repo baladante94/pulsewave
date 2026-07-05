@@ -9,7 +9,7 @@ final class SpectrumBarsRenderer: VisualizerRenderer {
 
     func draw(context: inout GraphicsContext, size: CGSize, state: AnalysisResult, particles: ParticleSystem) {
         drawBars(context: &context, size: size, bands: state.spectrumBands)
-        drawParticles(context: &context, particles: particles)
+        context.drawParticles(particles)
     }
 
     private func drawBars(context: inout GraphicsContext, size: CGSize, bands: [Float]) {
@@ -25,19 +25,6 @@ final class SpectrumBarsRenderer: VisualizerRenderer {
             let hue = 0.55 + (Double(index) / Double(bands.count)) * 0.3
             let color = Color(hue: hue, saturation: 0.7, brightness: 0.95)
             context.fill(Path(roundedRect: rect, cornerRadius: barWidth / 3), with: .color(color))
-        }
-    }
-
-    private func drawParticles(context: inout GraphicsContext, particles: ParticleSystem) {
-        for particle in particles.particles {
-            let rect = CGRect(
-                x: particle.position.x - particle.size / 2,
-                y: particle.position.y - particle.size / 2,
-                width: particle.size,
-                height: particle.size
-            )
-            let color = Color(red: particle.color.r, green: particle.color.g, blue: particle.color.b, opacity: particle.alpha)
-            context.fill(Path(ellipseIn: rect), with: .color(color))
         }
     }
 }

@@ -9,7 +9,13 @@ final class VisualizerViewModel: ObservableObject {
 
     let particleSystem = ParticleSystem()
     let audioSourceManager: AudioSourceManager
-    let availableRenderers: [VisualizerRenderer] = [SpectrumBarsRenderer(), RadialPulseRenderer()]
+    let availableRenderers: [VisualizerRenderer] = [
+        SpectrumBarsRenderer(),
+        MirrorBarsRenderer(),
+        RadialPulseRenderer(),
+        WaveformRibbonRenderer(),
+        DotGridRenderer()
+    ]
 
     private let analyzer = AudioAnalyzer()
     private let beatDetector = BeatDetector()

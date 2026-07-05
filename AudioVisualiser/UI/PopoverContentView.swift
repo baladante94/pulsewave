@@ -23,7 +23,8 @@ struct PopoverContentView: View {
                     Text(renderer.displayName).tag(renderer.id)
                 }
             }
-            .pickerStyle(.segmented)
+            .pickerStyle(.menu)
+            .frame(maxWidth: .infinity, alignment: .leading)
 
             if let error = audioSourceManager.lastError {
                 Text(error)

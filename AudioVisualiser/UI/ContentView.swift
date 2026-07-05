@@ -22,8 +22,8 @@ struct ContentView: View {
                         Text(renderer.displayName).tag(renderer.id)
                     }
                 }
-                .pickerStyle(.segmented)
-                .frame(width: 260)
+                .pickerStyle(.menu)
+                .frame(width: 180)
 
                 if let error = audioSourceManager.lastError {
                     Text(error)

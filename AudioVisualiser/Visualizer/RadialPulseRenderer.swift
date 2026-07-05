@@ -36,15 +36,6 @@ final class RadialPulseRenderer: VisualizerRenderer {
             )
         }
 
-        for particle in particles.particles {
-            let rect = CGRect(
-                x: particle.position.x - particle.size / 2,
-                y: particle.position.y - particle.size / 2,
-                width: particle.size,
-                height: particle.size
-            )
-            let color = Color(red: particle.color.r, green: particle.color.g, blue: particle.color.b, opacity: particle.alpha)
-            context.fill(Path(ellipseIn: rect), with: .color(color))
-        }
+        context.drawParticles(particles)
     }
 }
