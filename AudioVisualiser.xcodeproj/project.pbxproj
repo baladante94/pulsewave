@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		150FD3EB02E9A682E53CB9CC /* SystemAudioTapSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7CB7B9AD92ED6F719DB3B73 /* SystemAudioTapSource.swift */; };
+		202642D48F3C83A37F1CD55F /* ControlsPanel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06F17BF6BD73A06F9480B556 /* ControlsPanel.swift */; };
 		2F8B7CA637BE7E307CA3BDDA /* VisualizerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 880903052C5A7E5CB3FD5A03 /* VisualizerView.swift */; };
 		369648D6084E779B9DF29B45 /* VisualizerRenderer.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDF1A511F1076F48BAFEB3AC /* VisualizerRenderer.swift */; };
 		6FBE819899ED9FB8AE89D60E /* MirrorBarsRenderer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37D53521564A96D968412D5B /* MirrorBarsRenderer.swift */; };
@@ -34,6 +35,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		06F17BF6BD73A06F9480B556 /* ControlsPanel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ControlsPanel.swift; sourceTree = "<group>"; };
 		1C816D8D8588504B8A674622 /* FullScreenWindowController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FullScreenWindowController.swift; sourceTree = "<group>"; };
 		1D93104628104BEB86F376C8 /* ColorTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorTheme.swift; sourceTree = "<group>"; };
 		32B7F6D949A3EF953CD81115 /* DotGridRenderer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DotGridRenderer.swift; sourceTree = "<group>"; };
@@ -102,6 +104,7 @@
 			isa = PBXGroup;
 			children = (
 				C6FAF872ABA005C5F750E3AA /* ContentView.swift */,
+				06F17BF6BD73A06F9480B556 /* ControlsPanel.swift */,
 				1C816D8D8588504B8A674622 /* FullScreenWindowController.swift */,
 				869AFA11213A7F07425E3873 /* MainWindowController.swift */,
 				CAD3D68B0EF79ACABA81E1B7 /* MenuBarController.swift */,
@@ -228,6 +231,7 @@
 				7B9DFD20C1F1CB5C4EB242F8 /* BeatDetector.swift in Sources */,
 				AEEA9786BE702284F24D2AE5 /* ColorTheme.swift in Sources */,
 				C1989C67F4D43855C2610F55 /* ContentView.swift in Sources */,
+				202642D48F3C83A37F1CD55F /* ControlsPanel.swift in Sources */,
 				FDBC54F0BC57FD439DFB6D63 /* DebugLog.swift in Sources */,
 				91D844709E475CE60D1AE98D /* DotGridRenderer.swift in Sources */,
 				8B9A04A7541BD2FC723F1E78 /* FullScreenWindowController.swift in Sources */,

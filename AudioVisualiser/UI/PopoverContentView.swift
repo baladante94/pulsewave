@@ -12,54 +12,24 @@ struct PopoverContentView: View {
                 .frame(height: 100)
                 .clipShape(RoundedRectangle(cornerRadius: 8))
 
-            Picker("Source", selection: sourceBinding) {
-                ForEach(AudioSourceKind.allCases) { kind in
-                    Text(kind.displayName).tag(kind)
-                }
-            }
-            .pickerStyle(.segmented)
-
-            Picker("Style", selection: rendererBinding) {
-                ForEach(viewModel.availableRenderers, id: \.id) { renderer in
-                    Text(renderer.displayName).tag(renderer.id)
-                }
-            }
-            .pickerStyle(.menu)
-            .frame(maxWidth: .infinity, alignment: .leading)
-
-            Picker("Colors", selection: $viewModel.colorTheme) {
-                ForEach(ColorTheme.allCases) { theme in
-                    Text(theme.displayName).tag(theme)
-                }
-            }
-            .pickerStyle(.menu)
-            .frame(maxWidth: .infinity, alignment: .leading)
-
-            if let error = audioSourceManager.lastError {
-                Text(error)
-                    .font(.caption2)
-                    .foregroundStyle(.red)
-            }
-
-            Toggle("Show in menu bar", isOn: $menuBarController.isEnabled)
-                .toggleStyle(.switch)
-
-            if menuBarController.isEnabled {
-                Picker("Menu Bar Size", selection: $menuBarController.size) {
-                    ForEach(MenuBarVisualizerSize.allCases) { size in
-                        Text(size.displayName).tag(size)
-                    }
-                }
-                .pickerStyle(.segmented)
-
-                Picker("Menu Bar Colors", selection: $menuBarController.colorTheme) {
-                    ForEach(ColorTheme.allCases) { theme in
-                        Text(theme.displayName).tag(theme)
-                    }
-                }
-                .pickerStyle(.menu)
-                .frame(maxWidth: .infinity, alignment: .leading)
-            }
+            ControlsPanel(
+                sourceKind: audioSourceManager.currentKind,
+                activeRendererID: viewModel.activeRenderer.id,
+                colorTheme: viewModel.colorTheme,
+                lastError: audioSourceManager.lastError,
+                isMenuBarEnabled: menuBarController.isEnabled,
+                menuBarSize: menuBarController.size,
+                menuBarColorTheme: menuBarController.colorTheme,
+                compact: true,
+                renderers: viewModel.availableRenderers,
+                sourceBinding: sourceBinding,
+                rendererBinding: rendererBinding,
+                colorThemeBinding: $viewModel.colorTheme,
+                menuBarEnabledBinding: $menuBarController.isEnabled,
+                menuBarSizeBinding: $menuBarController.size,
+                menuBarColorThemeBinding: $menuBarController.colorTheme
+            )
+            .equatable()
 
             HStack {
                 Button("Open Main Window") {
