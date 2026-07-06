@@ -18,7 +18,7 @@ final class MainWindowController: NSWindowController, NSWindowDelegate {
             backing: .buffered,
             defer: false
         )
-        window.title = "AudioVisualiser"
+        window.title = "Pulsewave"
         window.center()
         window.minSize = NSSize(width: 480, height: 360)
         window.contentView = NSHostingView(

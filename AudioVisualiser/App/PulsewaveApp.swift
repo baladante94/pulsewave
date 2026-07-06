@@ -1,7 +1,7 @@
 import SwiftUI
 
 @main
-struct AudioVisualiserApp: App {
+struct PulsewaveApp: App {
     @NSApplicationDelegateAdaptor(AppDelegate.self) private var appDelegate
 
     var body: some Scene {

@@ -41,7 +41,7 @@ struct PopoverContentView: View {
             }
             .frame(maxWidth: .infinity)
 
-            Button("Quit AudioVisualiser") {
+            Button("Quit Pulsewave") {
                 NSApp.terminate(nil)
             }
             .foregroundStyle(.red)

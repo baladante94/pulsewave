@@ -95,7 +95,7 @@ final class MenuBarController: NSObject, ObservableObject {
         if isEnabled {
             guard statusItem == nil else { return }
             let item = NSStatusBar.system.statusItem(withLength: size.statusItemLength)
-            item.button?.image = NSImage(systemSymbolName: "waveform", accessibilityDescription: "AudioVisualiser")
+            item.button?.image = NSImage(systemSymbolName: "waveform", accessibilityDescription: "Pulsewave")
             item.button?.imagePosition = .imageOnly
             item.button?.target = self
             item.button?.action = #selector(statusItemClicked)
@@ -166,7 +166,7 @@ final class MenuBarController: NSObject, ObservableObject {
     private func showContextMenu() {
         guard let button = statusItem?.button else { return }
         let menu = NSMenu()
-        menu.addItem(withTitle: "Quit AudioVisualiser", action: #selector(quit), keyEquivalent: "q")
+        menu.addItem(withTitle: "Quit Pulsewave", action: #selector(quit), keyEquivalent: "q")
             .target = self
         statusItem?.menu = menu
         button.performClick(nil)

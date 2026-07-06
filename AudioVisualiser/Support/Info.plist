@@ -5,7 +5,7 @@
 	<key>CFBundleDevelopmentRegion</key>
 	<string>$(DEVELOPMENT_LANGUAGE)</string>
 	<key>CFBundleDisplayName</key>
-	<string>AudioVisualiser</string>
+	<string>Pulsewave</string>
 	<key>CFBundleExecutable</key>
 	<string>$(EXECUTABLE_NAME)</string>
 	<key>CFBundleIdentifier</key>
@@ -25,10 +25,10 @@
 	<key>LSUIElement</key>
 	<false/>
 	<key>NSAudioCaptureUsageDescription</key>
-	<string>AudioVisualiser captures system audio playback to drive the visualizer in real time.</string>
+	<string>Pulsewave captures system audio playback to drive the visualizer in real time.</string>
 	<key>NSHumanReadableCopyright</key>
 	<string></string>
 	<key>NSMicrophoneUsageDescription</key>
-	<string>AudioVisualiser uses the microphone to analyze audio and drive the visualizer.</string>
+	<string>Pulsewave uses the microphone to analyze audio and drive the visualizer.</string>
 </dict>
 </plist>

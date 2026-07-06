@@ -19,7 +19,7 @@ final class SystemAudioTapSource: AudioSource {
         let system = AudioHardwareSystem.shared
 
         let description = CATapDescription(stereoGlobalTapButExcludeProcesses: [])
-        description.name = "AudioVisualiser Tap"
+        description.name = "Pulsewave Tap"
         description.isPrivate = true
         description.muteBehavior = .unmuted
 
@@ -37,7 +37,7 @@ final class SystemAudioTapSource: AudioSource {
         let tapUID = try tap.uid
         let aggregateDescription: [String: Any] = [
             "uid": UUID().uuidString,
-            "name": "AudioVisualiser Aggregate",
+            "name": "Pulsewave Aggregate",
             "private": true,
             "tapautostart": true,
             "taps": [["uid": tapUID]]
