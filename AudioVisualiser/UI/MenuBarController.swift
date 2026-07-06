@@ -114,7 +114,7 @@ final class MenuBarController: NSObject, ObservableObject {
 
     private func startIconTimer() {
         iconTimer?.invalidate()
-        iconTimer = Timer.scheduledTimer(withTimeInterval: 1.0 / 20.0, repeats: true) { [weak self] _ in
+        iconTimer = Timer.scheduledTimer(withTimeInterval: 1.0 / 12.0, repeats: true) { [weak self] _ in
             Task { @MainActor in
                 self?.updateStatusIcon()
             }

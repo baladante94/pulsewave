@@ -25,6 +25,7 @@ final class VisualizerViewModel: ObservableObject {
     private let beatDetector = BeatDetector()
     private var displayedBands: [Float] = []
     private var bufferSubscription: AnyCancellable?
+    private var wasSilent = false
 
     init(audioSourceManager: AudioSourceManager) {
         self.audioSourceManager = audioSourceManager
@@ -63,6 +64,14 @@ final class VisualizerViewModel: ObservableObject {
         smoothed.spectrumBands = displayedBands
         smoothed.isBeat = isBeat
         smoothed.beatIntensity = intensity
+
+        // Skip the publish once audio has fully decayed to silence and stayed there --
+        // otherwise the UI keeps re-rendering ~40x/sec forever even with nothing to show.
+        let isSilent = !isBeat && result.overallEnergy < 0.0005 && displayedBands.allSatisfy { $0 < 0.0005 }
+        if isSilent && wasSilent {
+            return
+        }
+        wasSilent = isSilent
         smoothedResult = smoothed
     }
 }

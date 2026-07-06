@@ -4,7 +4,7 @@ struct VisualizerView: View {
     @ObservedObject var viewModel: VisualizerViewModel
 
     var body: some View {
-        TimelineView(.animation(minimumInterval: 1.0 / 60.0)) { _ in
+        TimelineView(.animation(minimumInterval: 1.0 / 30.0)) { _ in
             Canvas { context, size in
                 viewModel.activeRenderer.draw(
                     context: &context,
