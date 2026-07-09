@@ -55,6 +55,7 @@ final class MenuBarController: NSObject, ObservableObject {
 
     private let viewModel: VisualizerViewModel
     private let audioSourceManager: AudioSourceManager
+    private let nowPlayingManager: NowPlayingManager
     private let onOpenFullScreen: () -> Void
     private let onOpenMainWindow: () -> Void
 
@@ -65,11 +66,13 @@ final class MenuBarController: NSObject, ObservableObject {
     init(
         viewModel: VisualizerViewModel,
         audioSourceManager: AudioSourceManager,
+        nowPlayingManager: NowPlayingManager,
         onOpenFullScreen: @escaping () -> Void,
         onOpenMainWindow: @escaping () -> Void
     ) {
         self.viewModel = viewModel
         self.audioSourceManager = audioSourceManager
+        self.nowPlayingManager = nowPlayingManager
         self.onOpenFullScreen = onOpenFullScreen
         self.onOpenMainWindow = onOpenMainWindow
         self.isEnabled = (UserDefaults.standard.object(forKey: "menuBarVisualizerEnabled") as? Bool) ?? true
@@ -191,12 +194,13 @@ final class MenuBarController: NSObject, ObservableObject {
             return created
         }()
 
-        activePopover.contentSize = NSSize(width: 280, height: 300)
+        activePopover.contentSize = NSSize(width: 280, height: 270)
         activePopover.contentViewController = NSHostingController(
             rootView: PopoverContentView(
                 viewModel: viewModel,
                 audioSourceManager: audioSourceManager,
-                menuBarController: self
+                menuBarController: self,
+                nowPlayingManager: nowPlayingManager
             )
         )
         activePopover.show(relativeTo: button.bounds, of: button, preferredEdge: .minY)

@@ -5,12 +5,11 @@ struct PopoverContentView: View {
     @ObservedObject var viewModel: VisualizerViewModel
     @ObservedObject var audioSourceManager: AudioSourceManager
     @ObservedObject var menuBarController: MenuBarController
+    @ObservedObject var nowPlayingManager: NowPlayingManager
 
     var body: some View {
         VStack(spacing: 10) {
-            VisualizerView(viewModel: viewModel)
-                .frame(height: 100)
-                .clipShape(RoundedRectangle(cornerRadius: 8))
+            NowPlayingView(manager: nowPlayingManager)
 
             ControlsPanel(
                 sourceKind: audioSourceManager.currentKind,

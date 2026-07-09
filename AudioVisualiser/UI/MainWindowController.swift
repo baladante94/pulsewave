@@ -9,6 +9,7 @@ final class MainWindowController: NSWindowController, NSWindowDelegate {
         viewModel: VisualizerViewModel,
         audioSourceManager: AudioSourceManager,
         menuBarController: MenuBarController,
+        nowPlayingManager: NowPlayingManager,
         onVisibilityChange: @escaping (Bool) -> Void
     ) {
         self.onVisibilityChange = onVisibilityChange
@@ -25,7 +26,8 @@ final class MainWindowController: NSWindowController, NSWindowDelegate {
             rootView: ContentView(
                 viewModel: viewModel,
                 audioSourceManager: audioSourceManager,
-                menuBarController: menuBarController
+                menuBarController: menuBarController,
+                nowPlayingManager: nowPlayingManager
             )
         )
         window.isReleasedWhenClosed = false

@@ -4,9 +4,11 @@ import AppKit
 final class AppDelegate: NSObject, NSApplicationDelegate {
     let audioSourceManager = AudioSourceManager()
     lazy var viewModel = VisualizerViewModel(audioSourceManager: audioSourceManager)
+    let nowPlayingManager = NowPlayingManager()
     lazy var menuBarController = MenuBarController(
         viewModel: viewModel,
         audioSourceManager: audioSourceManager,
+        nowPlayingManager: nowPlayingManager,
         onOpenFullScreen: { [weak self] in self?.showFullScreen() },
         onOpenMainWindow: { [weak self] in self?.showMainWindow() }
     )
@@ -16,6 +18,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
         viewModel: viewModel,
         audioSourceManager: audioSourceManager,
         menuBarController: menuBarController,
+        nowPlayingManager: nowPlayingManager,
         onVisibilityChange: { [weak self] visible in
             NSApp.setActivationPolicy(visible ? .regular : .accessory)
         }

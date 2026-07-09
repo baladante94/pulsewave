@@ -4,12 +4,16 @@ struct ContentView: View {
     @ObservedObject var viewModel: VisualizerViewModel
     @ObservedObject var audioSourceManager: AudioSourceManager
     @ObservedObject var menuBarController: MenuBarController
+    @ObservedObject var nowPlayingManager: NowPlayingManager
 
     var body: some View {
         ZStack(alignment: .topLeading) {
             VisualizerView(viewModel: viewModel)
 
             VStack(alignment: .leading, spacing: 8) {
+                NowPlayingView(manager: nowPlayingManager)
+                    .frame(width: 260)
+
                 ControlsPanel(
                     sourceKind: audioSourceManager.currentKind,
                     activeRendererID: viewModel.activeRenderer.id,
