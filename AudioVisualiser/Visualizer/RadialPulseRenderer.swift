@@ -8,8 +8,8 @@ final class RadialPulseRenderer: VisualizerRenderer {
         let center = CGPoint(x: size.width / 2, y: size.height / 2)
         let maxRadius = min(size.width, size.height) / 2 - 10
         let baseRadius = maxRadius * 0.35
-        let energyBoost = CGFloat(min(state.overallEnergy * 40, 1)) * maxRadius * 0.4
-        let beatBoost = state.isBeat ? CGFloat(state.beatIntensity) * maxRadius * 0.25 : 0
+        let energyBoost = CGFloat(state.bass) * maxRadius * 0.4
+        let beatBoost = CGFloat(state.beatPulse) * maxRadius * 0.25
         let radius = baseRadius + energyBoost + beatBoost
 
         let ringColor = theme.color(forIndex: 0, count: 2)

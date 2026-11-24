@@ -3,3 +3,6 @@ xcuserdata/
 *.xcuserstate
 build/
 DerivedData/
+.backup/
+dist/
+build/

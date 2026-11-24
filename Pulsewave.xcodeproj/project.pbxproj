@@ -34,6 +34,7 @@
 		DF3005336EFD603D6655A76E /* PopoverContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83E4B2420CA759B00E9C317D /* PopoverContentView.swift */; };
 		E186BFE041D7C277337AEE0B /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 503CD1E3BD18B7055F77F7E8 /* ContentView.swift */; };
 		EB4F28E35EF509B520AC906E /* AudioAnalyzer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 302028CF8D37222B489A79AB /* AudioAnalyzer.swift */; };
+		F520E793A089E36B5291E522 /* TrippyRenderer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4436120AA361B9B4386F830B /* TrippyRenderer.swift */; };
 		F63BCCD737796400F4032B72 /* AudioSourceManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F523807BADA006309CC7606 /* AudioSourceManager.swift */; };
 /* End PBXBuildFile section */
 
@@ -44,6 +45,7 @@
 		302028CF8D37222B489A79AB /* AudioAnalyzer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioAnalyzer.swift; sourceTree = "<group>"; };
 		311F95C6E68D126F16A1C333 /* PulsewaveApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PulsewaveApp.swift; sourceTree = "<group>"; };
 		3F523807BADA006309CC7606 /* AudioSourceManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioSourceManager.swift; sourceTree = "<group>"; };
+		4436120AA361B9B4386F830B /* TrippyRenderer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrippyRenderer.swift; sourceTree = "<group>"; };
 		4A440351240A0689174B00D1 /* VisualizerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VisualizerView.swift; sourceTree = "<group>"; };
 		503CD1E3BD18B7055F77F7E8 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		5BFFB49DB94E62BCF1279C47 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -132,6 +134,7 @@
 				C6D3AE9F18B44E15D29A00DD /* MirrorBarsRenderer.swift */,
 				F11FD6F7790ECF53FA5CF240 /* RadialPulseRenderer.swift */,
 				FFC8747E9B82D2902295E820 /* SpectrumBarsRenderer.swift */,
+				4436120AA361B9B4386F830B /* TrippyRenderer.swift */,
 				B17AE67172B6E98A49E5E3FA /* VisualizerRenderer.swift */,
 				1D719955EC3FEC6F957D1A04 /* VisualizerViewModel.swift */,
 				BEC44D1494142EA6C0BF786D /* WaveformRibbonRenderer.swift */,
@@ -274,6 +277,7 @@
 				9C3A6EA676431AFE8A2DD60C /* RadialPulseRenderer.swift in Sources */,
 				3519EDEBA93D03DE5866B4AE /* SpectrumBarsRenderer.swift in Sources */,
 				DB9DEB6F8E2F2B3E5DECD4BC /* SystemAudioTapSource.swift in Sources */,
+				F520E793A089E36B5291E522 /* TrippyRenderer.swift in Sources */,
 				4BC8C4FFEB1E6C87264A1A63 /* VisualizerRenderer.swift in Sources */,
 				15135698E3E2F81F2CA15A99 /* VisualizerView.swift in Sources */,
 				69EBFB58F7138827A1852F63 /* VisualizerViewModel.swift in Sources */,

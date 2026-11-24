@@ -13,11 +13,13 @@ final class WaveformRibbonRenderer: VisualizerRenderer {
         guard samples.count > 1 else { return }
 
         let midY = size.height / 2
+        let peak = samples.reduce(0) { max($0, abs($1)) }
+        let gain = peak < 0.004 ? 0 : min(10, 0.7 / peak)
         let step = size.width / CGFloat(samples.count - 1)
         var path = Path()
         for (index, sample) in samples.enumerated() {
             let x = CGFloat(index) * step
-            let y = midY - CGFloat(sample) * midY * 3.5
+            let y = midY - CGFloat(sample * gain) * midY
             if index == 0 {
                 path.move(to: CGPoint(x: x, y: y))
             } else {
@@ -25,7 +27,7 @@ final class WaveformRibbonRenderer: VisualizerRenderer {
             }
         }
 
-        let beatGlow = state.isBeat ? CGFloat(state.beatIntensity) : 0
+        let beatGlow = CGFloat(state.beatPulse)
         let color = theme.color(forIndex: 0, count: 2)
         context.stroke(path, with: .color(color.opacity(0.9)), lineWidth: 2 + beatGlow * 4)
         context.stroke(path, with: .color(color.opacity(0.35)), lineWidth: 6 + beatGlow * 10)

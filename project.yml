@@ -27,8 +27,11 @@ targets:
       path: AudioVisualiser/Support/Info.plist
       properties:
         CFBundleDisplayName: Pulsewave
+        CFBundleShortVersionString: "1.1.0"
+        CFBundleVersion: "2"
         NSMicrophoneUsageDescription: "Pulsewave uses the microphone to analyze audio and drive the visualizer."
         NSAudioCaptureUsageDescription: "Pulsewave captures system audio playback to drive the visualizer in real time."
+        NSAppleEventsUsageDescription: "Pulsewave reads the current track from Music, Spotify and your browser to show what is playing."
         LSApplicationCategoryType: "public.app-category.music"
         LSUIElement: false
         NSHumanReadableCopyright: ""
@@ -36,3 +39,4 @@ targets:
       path: AudioVisualiser/Support/Pulsewave.entitlements
       properties:
         com.apple.security.app-sandbox: false
+        com.apple.security.automation.apple-events: true

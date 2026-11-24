@@ -5,7 +5,6 @@ final class MirrorBarsRenderer: VisualizerRenderer {
     let displayName = "Mirror Bars"
 
     private let barSpacing: CGFloat = 4
-    private let heightScale: CGFloat = 4
 
     func draw(context: inout GraphicsContext, size: CGSize, state: AnalysisResult, theme: ColorTheme) {
         drawBars(context: &context, size: size, bands: state.spectrumBands, theme: theme)
@@ -19,7 +18,7 @@ final class MirrorBarsRenderer: VisualizerRenderer {
         let barWidth = max(2, (size.width - totalSpacing) / barCount)
 
         for (index, value) in bands.enumerated() {
-            let halfHeight = max(1, min(midY, CGFloat(value) * size.height * heightScale))
+            let halfHeight = max(1, min(midY, CGFloat(value) * midY * 0.95))
             let x = CGFloat(index) * (barWidth + barSpacing)
             let rect = CGRect(x: x, y: midY - halfHeight, width: barWidth, height: halfHeight * 2)
             let color = theme.color(forIndex: index, count: bands.count)

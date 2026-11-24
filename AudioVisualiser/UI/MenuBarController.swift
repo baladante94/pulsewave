@@ -146,7 +146,7 @@ final class MenuBarController: NSObject, ObservableObject {
             ForEach(0..<max(barCount, 1), id: \.self) { index in
                 RoundedRectangle(cornerRadius: 0.5)
                     .fill(colorTheme.color(forIndex: index, count: barCount))
-                    .frame(width: barWidth, height: barCount > 0 ? max(1.5, min(height, CGFloat(bands[index]) * 60)) : 1.5)
+                    .frame(width: barWidth, height: barCount > 0 ? max(1.5, min(height, CGFloat(bands[index]) * height)) : 1.5)
             }
         }
         .frame(width: width, height: height, alignment: .bottom)

@@ -1,36 +1,31 @@
 import Foundation
 
+/// Onset detector on bass spectral flux: fires when flux rises well above its recent mean + spread,
+/// so it follows the groove rather than one loud peak.
 final class BeatDetector {
-    private var energyHistory: [Float] = []
+    private var history: [Float] = []
     private let historySize: Int
-    private let sensitivity: Float
+    private let k: Float
     private let refractoryPeriod: TimeInterval
-    private let minimumEnergy: Float
+    private let minimumFlux: Float
     private var lastBeatTime: TimeInterval = -.infinity
 
-    init(historySize: Int = 43, sensitivity: Float = 1.4, refractoryPeriod: TimeInterval = 0.12, minimumEnergy: Float = 0.0005) {
+    init(historySize: Int = 60, k: Float = 1.3, refractoryPeriod: TimeInterval = 0.2, minimumFlux: Float = 0.25) {
         self.historySize = historySize
-        self.sensitivity = sensitivity
+        self.k = k
         self.refractoryPeriod = refractoryPeriod
-        self.minimumEnergy = minimumEnergy
+        self.minimumFlux = minimumFlux
     }
 
-    func detect(energy: Float, at time: TimeInterval) -> (isBeat: Bool, intensity: Float) {
-        let localAverage = energyHistory.isEmpty ? energy : energyHistory.reduce(0, +) / Float(energyHistory.count)
+    func detect(flux: Float, at time: TimeInterval) -> (isBeat: Bool, intensity: Float) {
+        let mean = history.isEmpty ? 0 : history.reduce(0, +) / Float(history.count)
+        let variance = history.isEmpty ? 0 : history.reduce(0) { $0 + ($1 - mean) * ($1 - mean) } / Float(history.count)
+        history.append(flux)
+        if history.count > historySize { history.removeFirst() }
 
-        energyHistory.append(energy)
-        if energyHistory.count > historySize {
-            energyHistory.removeFirst()
-        }
-
-        let threshold = max(localAverage * sensitivity, minimumEnergy)
-        let sinceLastBeat = time - lastBeatTime
-        guard energy > threshold, sinceLastBeat > refractoryPeriod else {
-            return (false, 0)
-        }
-
+        let threshold = max(mean + k * sqrt(variance), minimumFlux)
+        guard flux > threshold, time - lastBeatTime > refractoryPeriod else { return (false, 0) }
         lastBeatTime = time
-        let intensity = min(1.0, (energy - threshold) / max(threshold, minimumEnergy))
-        return (true, intensity)
+        return (true, min(1, 0.5 + (flux - threshold) / threshold))
     }
 }

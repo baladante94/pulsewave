@@ -5,7 +5,6 @@ final class SpectrumBarsRenderer: VisualizerRenderer {
     let displayName = "Spectrum Bars"
 
     private let barSpacing: CGFloat = 4
-    private let heightScale: CGFloat = 7
 
     func draw(context: inout GraphicsContext, size: CGSize, state: AnalysisResult, theme: ColorTheme) {
         drawBars(context: &context, size: size, bands: state.spectrumBands, theme: theme)
@@ -18,7 +17,7 @@ final class SpectrumBarsRenderer: VisualizerRenderer {
         let barWidth = max(2, (size.width - totalSpacing) / barCount)
 
         for (index, value) in bands.enumerated() {
-            let barHeight = max(2, min(size.height, CGFloat(value) * size.height * heightScale))
+            let barHeight = max(2, min(size.height, CGFloat(value) * size.height * 0.95))
             let x = CGFloat(index) * (barWidth + barSpacing)
             let rect = CGRect(x: x, y: size.height - barHeight, width: barWidth, height: barHeight)
             let color = theme.color(forIndex: index, count: bands.count)

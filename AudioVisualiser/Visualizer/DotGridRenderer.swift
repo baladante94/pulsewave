@@ -13,11 +13,11 @@ final class DotGridRenderer: VisualizerRenderer {
         let columns = bands.count
         let cellWidth = size.width / CGFloat(columns)
         let cellHeight = size.height / CGFloat(rows)
-        let beatFlash = state.isBeat ? Double(state.beatIntensity) : 0
+        let beatFlash = Double(state.beatPulse)
 
         for column in 0..<columns {
             let value = CGFloat(bands[column])
-            let litRows = Int(value * CGFloat(rows) * 6)
+            let litRows = Int((value * CGFloat(rows)).rounded())
             let baseColor = theme.color(forIndex: column, count: columns)
 
             for row in 0..<rows {

@@ -1,3 +1,4 @@
+import AppKit
 import SwiftUI
 
 struct ContentView: View {
@@ -6,10 +7,13 @@ struct ContentView: View {
     @ObservedObject var menuBarController: MenuBarController
     @ObservedObject var nowPlayingManager: NowPlayingManager
 
+    @State private var isFullScreen = false
+
     var body: some View {
         ZStack(alignment: .topLeading) {
             VisualizerView(viewModel: viewModel)
 
+            if !isFullScreen {
             VStack(alignment: .leading, spacing: 8) {
                 NowPlayingView(manager: nowPlayingManager)
                     .frame(width: 260)
@@ -34,7 +38,10 @@ struct ContentView: View {
                 .equatable()
             }
             .padding()
+            }
         }
+        .onReceive(NotificationCenter.default.publisher(for: NSWindow.didEnterFullScreenNotification)) { _ in isFullScreen = true }
+        .onReceive(NotificationCenter.default.publisher(for: NSWindow.didExitFullScreenNotification)) { _ in isFullScreen = false }
     }
 
     private var sourceBinding: Binding<AudioSourceKind> {

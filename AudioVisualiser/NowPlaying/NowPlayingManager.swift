@@ -38,21 +38,21 @@ final class NowPlayingManager: ObservableObject {
     func refresh() {
         if isRunning(Self.musicBundleID),
            let state = runAppleScript("tell application \"Music\" to get player state as string"),
-           state == "playing",
+           state == "playing" || state == "paused",
            let name = runAppleScript("tell application \"Music\" to get name of current track"), !name.isEmpty {
             title = name
             artist = runAppleScript("tell application \"Music\" to get artist of current track")
-            isPlaying = true
+            isPlaying = state == "playing"
             return
         }
 
         if isRunning(Self.spotifyBundleID),
            let state = runAppleScript("tell application \"Spotify\" to get player state as string"),
-           state == "playing",
+           state == "playing" || state == "paused",
            let name = runAppleScript("tell application \"Spotify\" to get name of current track"), !name.isEmpty {
             title = name
             artist = runAppleScript("tell application \"Spotify\" to get artist of current track")
-            isPlaying = true
+            isPlaying = state == "playing"
             return
         }
 
@@ -69,9 +69,20 @@ final class NowPlayingManager: ObservableObject {
         isPlaying = false
     }
 
-    func togglePlayPause() { sendMediaKey(NX_KEYTYPE_PLAY) }
-    func nextTrack() { sendMediaKey(NX_KEYTYPE_NEXT) }
-    func previousTrack() { sendMediaKey(NX_KEYTYPE_PREVIOUS) }
+    func togglePlayPause() { control("playpause", key: NX_KEYTYPE_PLAY) }
+    func nextTrack() { control("next track", key: NX_KEYTYPE_NEXT) }
+    func previousTrack() { control("previous track", key: NX_KEYTYPE_PREVIOUS) }
+
+    private func control(_ command: String, key: Int32) {
+        for (bundleID, app) in [(Self.musicBundleID, "Music"), (Self.spotifyBundleID, "Spotify")] where isRunning(bundleID) {
+            let state = runAppleScript("tell application \"\(app)\" to get player state as string")
+            guard state == "playing" || state == "paused" else { continue }
+            _ = runAppleScript("tell application \"\(app)\" to \(command)")
+            refresh()
+            return
+        }
+        sendMediaKey(key)
+    }
 
     private func isRunning(_ bundleID: String) -> Bool {
         NSWorkspace.shared.runningApplications.contains { $0.bundleIdentifier == bundleID }

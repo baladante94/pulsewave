@@ -11,6 +11,7 @@ final class AudioAnalyzer {
     private var ringBuffer: [Float] = []
     private var sampleRate: Double = 44100
     private var bandRanges: [(Int, Int)] = []
+    private var peakDb: Float = -55
 
     private let queue = DispatchQueue(label: "audio.analysis", qos: .userInteractive)
 
@@ -95,13 +96,30 @@ final class AudioAnalyzer {
         }
 
         var bands = [Float](repeating: 0, count: bandCount)
+        var frameMaxDb: Float = -200
         for (i, range) in bandRanges.enumerated() {
             guard range.0 < range.1 else { continue }
+            var peak: Float = 0
             var sum: Float = 0
             for bin in range.0..<range.1 {
+                peak = max(peak, normalized[bin])
                 sum += normalized[bin]
             }
-            bands[i] = sum / Float(max(1, range.1 - range.0))
+            let mean = sum / Float(range.1 - range.0)
+            let magnitude = peak * 0.6 + mean * 0.4
+            let tilt = Float(i) / Float(bandCount) * 25
+            let db = 20 * log10(max(magnitude, 1e-7)) + tilt
+            bands[i] = db
+            frameMaxDb = max(frameMaxDb, db)
+        }
+
+        // Auto-gain: follow the loudest band with a slow fall so quiet and loud tracks both
+        // fill the display, but never lift true silence above the floor.
+        peakDb = max(frameMaxDb, peakDb - 0.08, -55)
+        let range: Float = 42
+        let floorDb = peakDb - range
+        for i in 0..<bandCount {
+            bands[i] = min(1, max(0, (bands[i] - floorDb) / range))
         }
 
         let overallEnergy = normalized.reduce(0, +) / Float(max(1, normalized.count))
